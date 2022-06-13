@@ -1,1 +1,16 @@
-<h1>profile</h1>
+{% extends "main.html" %}
+
+{% block content %}
+
+<form action="" method="GET">
+    {% csrf_token %}
+    <input type="text" name="search_query" placeholder="Search users" value="{{ search_query }}">
+    <input type="submit" value="Search">
+</form>
+{% for profile in profiles %}
+
+<a href="{% url 'profile' profile.id %}"><h4>{{profile.username}}</h4></a>
+
+{% endfor %}
+
+{% endblock content %}
