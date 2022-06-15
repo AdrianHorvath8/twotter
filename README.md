@@ -2,7 +2,7 @@
 
 # Twotter
 
-I created a website that mimics the Twitter application. Please keep in mind that I am a backend developer, so the site does not look professionalwebsite looks like looks.
+I created a website that mimics the Twitter application. Please keep in mind that I am a backend developer, so the site does not look good.
 
 ## Getting Started
 
