@@ -1,22 +1,13 @@
 
-import re
+from re import T
+from posts.models import Post, Tag
 from django.shortcuts import redirect, render
 from .forms import CustomUserCreationForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
 from .models import Profile
 from .forms import AccountForm
-
-def profiles(request):
-    search_query = ""
-
-    if request.GET.get("search_query"):
-        search_query = request.GET.get("search_query")
-
-    profiles = Profile.objects.filter(name__icontains = search_query)
-
-    context = {"profiles":profiles, "search_query":search_query}
-    return render(request,"users/profiles.html", context)
+from django.contrib.auth.decorators import login_required
 
 def profile(request, pk):
     profile = Profile.objects.get(id = pk)
@@ -25,7 +16,7 @@ def profile(request, pk):
     return render(request,"users/profile.html", context)
 
 
-
+@login_required(login_url="login")
 def account(request,pk):
     
     profile = Profile.objects.get(id = pk)
