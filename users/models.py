@@ -7,14 +7,14 @@ from django.contrib.auth.models import User
 class Profile(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,
     primary_key=True, editable=False)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user", null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=150, null=True, blank=True)
     username = models.CharField(max_length=150, null=True, blank=True)
     location = models.CharField(max_length=150, null=True, blank=True)
     profile_image = models.ImageField(null=False, blank=False, upload_to="profiles/", default="profiles/user-default.png")
     email = models.EmailField(max_length=200,null=True, blank=True)
     short_info = models.CharField(max_length=200, null=True, blank=True)
-    bio = models.TextField(null=True, blank=True)
+    website = models.CharField(max_length=200, null=True, blank=True)
     followers = models.ManyToManyField(User,related_name="followers")
     post = models.ForeignKey("posts.Post", on_delete=models.CASCADE, related_name="post", blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)

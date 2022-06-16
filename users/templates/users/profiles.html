@@ -8,8 +8,16 @@
     <input type="submit" value="Search">
 </form>
 {% for profile in profiles %}
+<img style="max-width: 50px;" src="{{ profile.profile_image.url }}" alt="">
 
-<a href="{% url 'profile' profile.id %}"><h4>{{profile.username}}</h4></a>
+<a href="{% url 'profile' profile.id %}">
+    {{profile.name}}
+    <br>
+</a>
+<a href="{% url 'profile' profile.id %}">
+    <small>@{{profile.username}}</small>
+    <hr>
+</a>
 
 {% endfor %}
 

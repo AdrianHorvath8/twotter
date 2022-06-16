@@ -1,9 +1,11 @@
 
+import re
 from django.shortcuts import redirect, render
 from .forms import CustomUserCreationForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
 from .models import Profile
+from .forms import AccountForm
 
 def profiles(request):
     search_query = ""
@@ -25,9 +27,21 @@ def profile(request, pk):
 
 
 def account(request,pk):
+    
     profile = Profile.objects.get(id = pk)
+    form = AccountForm(instance=profile)
+    if request.user.profile == profile:
+        pass
+    else:
+        return redirect("account", pk=request.user.profile.id)
 
-    context = {"profile":profile}
+    if request.method == "POST":
+        form = AccountForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid:
+            form.save()
+            return redirect("account", pk=request.user.profile.id)
+
+    context = {"profile":profile,"form":form}
     return render(request,"users/account.html", context)
 
 
