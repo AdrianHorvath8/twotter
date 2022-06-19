@@ -1,6 +1,47 @@
 {% extends "main.html" %}
 
 {% block content %}
-<h1>{{ profile.name }}</h1>
+
+<p></p>
+<strong>{{ profile.name }}</strong>
+
+<br>
+<small>@{{ profile.username }}</small>
+
+<br>
+<img style="max-width: 200px;" src="{{ profile.profile_image.url }}" alt="">
+
+<br>
+{% if profile.short_info %}
+    {{ profile.short_info }}
+{% endif %}
+
+<br>
+{% if profile.location %}
+    {{ profile.location }}
+{% endif %}
+
+<br>
+{{ profile.email }}
+
+<br>
+{% if profile.website %}
+    <a href="{{ profile.short_info }}">Website</a>
+{% endif %}
+
+{% for post in posts %}
+    <a href="{% url 'profile' post.owner.id %}">
+        <img style="max-width: 30px;" src="{{ post.owner.profile_image.url }}" alt="">
+        {{ post.owner.name }}
+    </a>
+    <br>
+    <small>@{{ post.owner.username }}</small>
+    
+    {{ post.created | timesince }}
+    <br>
+    {{ post.body}}
+    <hr>
+    <!--TODO likes -->
+{% endfor %}
 
 {% endblock content %}

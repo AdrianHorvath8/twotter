@@ -34,12 +34,12 @@
 
         <br>
         {% if profile.short_info %}
-        {{ profile.short_info }}
+            {{ profile.short_info }}
         {% endif %}
 
         <br>
         {% if profile.location %}
-        {{ profile.location }}
+            {{ profile.location }}
         {% endif %}
 
         <br>
@@ -47,7 +47,11 @@
 
         <br>
         {% if profile.website %}
-        <a href="{{ profile.short_info }}">Website</a>
+            <a href="{{ profile.website }}">
+        <img style="max-width: 30px;" src="{{ post.owner.profile_image.url }}" alt="">
+        {{ post.owner.name }}
+    </a>
+    
         {% endif %}
     </div> 
 </div>

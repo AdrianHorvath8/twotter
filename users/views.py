@@ -1,6 +1,3 @@
-
-from re import T
-from posts.models import Post, Tag
 from django.shortcuts import redirect, render
 from .forms import CustomUserCreationForm
 from django.contrib.auth import login,logout,authenticate
@@ -11,8 +8,9 @@ from django.contrib.auth.decorators import login_required
 
 def profile(request, pk):
     profile = Profile.objects.get(id = pk)
+    posts = profile.post.all()# TODO error set postov daneho usera nefunguje
 
-    context = {"profile":profile}
+    context = {"profile":profile,"posts":posts}
     return render(request,"users/profile.html", context)
 
 
@@ -21,10 +19,7 @@ def account(request,pk):
     
     profile = Profile.objects.get(id = pk)
     form = AccountForm(instance=profile)
-    if request.user.profile == profile:
-        pass
-    else:
-        return redirect("account", pk=request.user.profile.id)
+    
 
     if request.method == "POST":
         form = AccountForm(request.POST, request.FILES, instance=profile)

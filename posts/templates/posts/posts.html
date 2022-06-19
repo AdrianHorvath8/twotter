@@ -1,6 +1,22 @@
 {% extends "main.html" %}
 
 {% block content %}
-<h1>Hello</h1>
+
 <h3><a href="{% url 'search' %}">Search</a></h3>
+
+{% for post in posts %}
+
+    <a href="{% url 'profile' post.owner.id %}">
+        <img style="max-width: 30px;" src="{{ post.owner.profile_image.url }}" alt="">
+        {{ post.owner.name }}
+    </a>
+    <br>
+    <small>@{{ post.owner.username }}</small>
+
+    {{ post.created | timesince }}
+    <br>
+    {{ post.body}}
+    <hr>
+    <!--TODO likes -->
+{% endfor %}
 {% endblock content %}

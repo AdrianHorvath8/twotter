@@ -43,7 +43,7 @@ class Post(models.Model):
         ("up", "Up vote"),
         ("down", "Down vote"),
     )
-    tag = models.ManyToManyField(Tag, blank=True, null=True)
+    tag = models.ManyToManyField(Tag, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

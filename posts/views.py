@@ -1,10 +1,13 @@
+from turtle import pos
 from django.shortcuts import render
 from django.db.models import Q
 from .models import Post, Tag
 from users.models import Profile
 
 def posts(request):
-    return render(request,"posts/posts.html")
+    posts = Post.objects.all()
+    context = {"posts":posts}
+    return render(request,"posts/posts.html",context)
 
 
 def search(request):
