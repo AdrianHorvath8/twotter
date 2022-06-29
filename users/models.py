@@ -16,7 +16,6 @@ class Profile(models.Model):
     short_info = models.CharField(max_length=200, null=True, blank=True)
     website = models.CharField(max_length=200, null=True, blank=True)
     followers = models.ManyToManyField(User,related_name="followers")
-    post = models.ForeignKey("posts.Post", on_delete=models.CASCADE, related_name="post", blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

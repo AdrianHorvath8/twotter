@@ -47,12 +47,12 @@
 
         <br>
         {% if profile.website %}
-            <a href="{{ profile.website }}">
-        <img style="max-width: 30px;" src="{{ post.owner.profile_image.url }}" alt="">
-        {{ post.owner.name }}
-    </a>
-    
+            <a  href="{{ profile.website }}">Website</a> 
         {% endif %}
+        <hr style="border: 3px solid;">
+
+        {% include 'post.html' with posts=posts %}
+        
     </div> 
 </div>
 {% endblock content %}

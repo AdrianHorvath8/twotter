@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 def profile(request, pk):
     profile = Profile.objects.get(id = pk)
-    posts = profile.post.all()# TODO error set postov daneho usera nefunguje
+    posts = profile.owner.all()
 
     context = {"profile":profile,"posts":posts}
     return render(request,"users/profile.html", context)
@@ -18,6 +18,7 @@ def profile(request, pk):
 def account(request,pk):
     
     profile = Profile.objects.get(id = pk)
+    posts = profile.owner.all()
     form = AccountForm(instance=profile)
     
 
@@ -27,7 +28,7 @@ def account(request,pk):
             form.save()
             return redirect("account", pk=request.user.profile.id)
 
-    context = {"profile":profile,"form":form}
+    context = {"profile":profile,"form":form, "posts":posts}
     return render(request,"users/account.html", context)
 
 
@@ -69,7 +70,7 @@ def register(request):
             messages.success(request, "User successfuly created")
             login(request, user)
             
-            return redirect("posts") #TODO account edit
+            return redirect("account", pk=request.user.profile.id) 
 
 
     context = {"page":page, "form":form}

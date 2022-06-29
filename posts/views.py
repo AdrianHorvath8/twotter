@@ -1,8 +1,9 @@
-from turtle import pos
-from django.shortcuts import render
+
+from django.shortcuts import redirect, render
 from django.db.models import Q
 from .models import Post, Tag
 from users.models import Profile
+from .forms import PostForm
 
 def posts(request):
     posts = Post.objects.all()
@@ -26,6 +27,22 @@ def search(request):
 
 def tag_view(request,pk):
     tag = Tag.objects.get(id=pk)
-    posts = tag.post #TODO spraviť to tak aby sa vypisali projekty z tymto tagom kôli searchu
-    context = {"posts":posts}
+    posts = tag.tag.all() 
+    context = {"posts":posts }
     return render(request,"posts/tag_view.html", context)
+
+
+
+def post_create(request):
+    form = PostForm()
+
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid:
+            post = form.save(commit=False)
+            post.owner = request.user.profile
+            post.save()
+            return redirect("posts")
+
+    context = {"form":form}
+    return render(request,"posts/posts.html",context)

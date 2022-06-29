@@ -1,6 +1,7 @@
 {% extends 'main.html' %}
 
 {% block content %}
-{% for post in posts %}
-{{ post.body }}
+<p></p>
+{% include 'post.html' with posts=posts %}
+
 {% endblock %}
