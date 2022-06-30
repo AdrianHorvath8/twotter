@@ -1,4 +1,8 @@
-{% for post in posts %}
+{% extends "main.html" %}
+
+{% block content %}
+
+<p></p>
 <a href="{% url 'profile' post.owner.id %}">
     <img style="max-width: 30px;" src="{{ post.owner.profile_image.url }}" alt="">
     {{ post.owner.name }}
@@ -17,6 +21,8 @@
     <img style="max-width: 200px;" src="{{ post.post_image.url }}" alt="">
 </a>
 {% endif %}
-<hr>
+
 <!--TODO likes -->
-{% endfor %}
+<hr>
+
+{% endblock content %}

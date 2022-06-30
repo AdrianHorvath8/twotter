@@ -15,21 +15,6 @@
 </form>
 
 
+{% include 'post.html' with posts=posts %}
 
-{% for post in posts %}
-
-    <a href="{% url 'profile' post.owner.id %}">
-        <img style="max-width: 30px;" src="{{ post.owner.profile_image.url }}" alt="">
-        {{ post.owner.name }}
-    </a>
-    <br>
-    <small>@{{ post.owner.username }}</small>
-
-    {{ post.created | timesince }}
-    <br>
-    {{ post.body}}
-    <hr>
-    <!--TODO likes -->
-    
-{% endfor %}
 {% endblock content %}

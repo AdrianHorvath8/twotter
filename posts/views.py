@@ -10,7 +10,7 @@ def posts(request):
     form = PostForm()
 
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.owner = request.user.profile
@@ -40,5 +40,10 @@ def tag_view(request,pk):
     context = {"posts":posts }
     return render(request,"posts/tag_view.html", context)
 
+
+def post_comments(request, pk):
+    post = Post.objects.get(id=pk) 
+    context = {"post":post }
+    return render(request,"posts/post_comments.html", context)
 
 
