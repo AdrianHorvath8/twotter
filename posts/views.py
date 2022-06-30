@@ -7,7 +7,16 @@ from .forms import PostForm
 
 def posts(request):
     posts = Post.objects.all()
-    context = {"posts":posts}
+    form = PostForm()
+
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.owner = request.user.profile
+            post.save()
+            return redirect("posts")
+    context = {"posts":posts, "form":form}
     return render(request,"posts/posts.html",context)
 
 
@@ -33,16 +42,3 @@ def tag_view(request,pk):
 
 
 
-def post_create(request):
-    form = PostForm()
-
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid:
-            post = form.save(commit=False)
-            post.owner = request.user.profile
-            post.save()
-            return redirect("posts")
-
-    context = {"form":form}
-    return render(request,"posts/posts.html",context)

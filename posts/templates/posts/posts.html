@@ -4,7 +4,7 @@
 
 <h3><a href="{% url 'search' %}">Search</a></h3>
 
-<form action="" method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% for field in form %}
     {{ field.label }}:
@@ -13,7 +13,6 @@
     {% endfor %}
     <input type="submit" value="Twoot">
 </form>
-
 
 
 

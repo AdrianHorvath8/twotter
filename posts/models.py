@@ -21,7 +21,7 @@ class Comment(models.Model):
     primary_key=True, editable=False)
     comentator = models.ForeignKey("users.Profile",on_delete=models.CASCADE)
     comment_image = models.ImageField(blank=True, null=True, upload_to="comment/")    
-    body = models.TextField(null=True, blank=True)
+    body = models.CharField( max_length=500 ,null=True, blank=True)
     post = models.ForeignKey("Post", on_delete=models.CASCADE, blank=True, null=True)
     VOTE_TYPE = (
         ("up", "Up vote"),
@@ -38,7 +38,7 @@ class Post(models.Model):
     primary_key=True, editable=False)
     owner = models.ForeignKey("users.Profile", on_delete=models.SET_NULL, related_name="owner" , null=True, blank=True)
     post_image = models.ImageField(blank=True, null=True, upload_to="post/")    
-    body = models.TextField(null=True, blank=True)
+    body = models.CharField(max_length=500 ,null=True, blank=True)
     VOTE_TYPE = (
         ("up", "Up vote"),
         ("down", "Down vote"),
