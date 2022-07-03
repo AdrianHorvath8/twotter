@@ -26,19 +26,22 @@ class Profile(models.Model):
 
 
     
-
-
-
+class Chat(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, unique=True,
+    primary_key=True, editable=False)
+    sender = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
+    recipient =  models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="recipient", null=True, blank=True)
+    
 
 class Message(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,
     primary_key=True, editable=False)
-    sender = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="sender", null=True, blank=True)
-    recipient =  models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="recipient", null=True, blank=True)
-    subject = models.CharField(max_length=150, null=True, blank=True)
-    body = models.TextField(null=True, blank=True)
-    is_read = models.BooleanField(default=False, null=True)
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, null=True, blank=True)
+    body = models.CharField(max_length=10000 ,null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.subject)
+        return str(self.body)
+
+
+

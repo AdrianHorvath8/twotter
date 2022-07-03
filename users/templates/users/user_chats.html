@@ -1,0 +1,12 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+
+{% for chat in chats %}
+<a href="{% url 'user_chat' chat.id %}">{{ chat.recipient }} and {{ chat.sender }} chat</a>
+<br>
+{% endfor %}
+
+
+{% endblock content %}

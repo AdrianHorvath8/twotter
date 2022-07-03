@@ -1,10 +1,12 @@
+from urllib import response
 from django.shortcuts import redirect, render
 from .forms import CustomUserCreationForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
-from .models import Profile
+from .models import Profile, Message, Chat
 from .forms import AccountForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 def profile(request, pk):
     profile = Profile.objects.get(id = pk)
@@ -75,3 +77,20 @@ def register(request):
 
     context = {"page":page, "form":form}
     return render(request,"users/login_register.html", context)
+
+
+def user_chats(request, pk):
+    
+    profile = Profile.objects.get(id=pk)
+    chats= profile.chat_set.all()
+    
+
+    context = {"chats":chats}
+    return render(request, "users/user_chats.html", context)
+
+def user_chat(request,pk):
+    chat = Chat.objects.get(id=pk)
+
+    #TODO messages
+    context = {"chat":chat}
+    return render(request, "users/user_chat.html", context)
