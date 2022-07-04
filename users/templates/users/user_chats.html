@@ -39,9 +39,15 @@
 
 
     <div>
+
         {% for chat in chats %}
-        <a href="{% url 'user_chat' chat.id %}">{{ chat.chat_member_one }} and {{ chat.chat_member_two }} chat</a>
+        {% if chat.chat_member_one == request.user.profile %}
+        <a href="{% url 'user_chat' chat.id %}">{{ chat.chat_member_two.name }} @{{ chat.chat_member_two.username }} chat</a>      
         <br>
+        {% else %}
+        <a href="{% url 'user_chat' chat.id %}">{{ chat.chat_member_one.name }} @{{ chat.chat_member_one.username }} chat</a>
+        <br>
+        {% endif %}
         {% endfor %}
     </div>
 </div>

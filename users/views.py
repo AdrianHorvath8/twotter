@@ -88,7 +88,8 @@ def user_chats(request, pk):
     profiles = Profile.objects.filter(Q(name__icontains = search_query))
     
     profile = Profile.objects.get(id=pk)
-    chats= profile.chat_set.all()
+    chats= profile.chat_set.all().union(profile.chat_member_two.all())
+    
 
     exclude_profiles=[]
     
@@ -104,8 +105,8 @@ def user_chats(request, pk):
             if chat.chat_member_two in exclude_profiles:
                 pass
             else:
-                exclude_profiles.append(chat.chat_member_two)
-
+                exclude_profiles.append(chat.chat_member_one)
+    
 
     
     profiles = profiles.exclude(id__in=[user_profile.id for user_profile in exclude_profiles])

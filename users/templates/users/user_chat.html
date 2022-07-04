@@ -2,6 +2,9 @@
 
 {% block content %}
 
+<p><a href="{{ request.META.HTTP_REFERER }}">back button</a></p>
+
+
 {% for message in chat_messages %}
 {{ message.owner }} <small>{{ message.created | timesince }}</small>
 <br>
