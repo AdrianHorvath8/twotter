@@ -29,13 +29,14 @@ class Profile(models.Model):
 class Chat(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,
     primary_key=True, editable=False)
-    sender = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
-    recipient =  models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="recipient", null=True, blank=True)
+    chat_member_one = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
+    chat_member_two =  models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="chat_member_two", null=True, blank=True)
     
 
 class Message(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,
     primary_key=True, editable=False)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, null=True, blank=True)
     body = models.CharField(max_length=10000 ,null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)

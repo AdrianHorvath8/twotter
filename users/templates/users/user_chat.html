@@ -2,6 +2,11 @@
 
 {% block content %}
 
-<!-- TODO messages -->
+{% for message in chat_messages %}
+{{ message.owner }} <small>{{ message.created | timesince }}</small>
+<br>
+{{ message }}
+<hr>
+{% endfor %}
 
 {% endblock content %}

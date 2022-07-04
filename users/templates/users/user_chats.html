@@ -1,12 +1,48 @@
 {% extends "main.html" %}
 
 {% block content %}
+<style>
+    .home-container{  
+            display: grid;
+            grid-template-columns: 3fr 3fr;
+        }
+</style>
 
 
-{% for chat in chats %}
-<a href="{% url 'user_chat' chat.id %}">{{ chat.recipient }} and {{ chat.sender }} chat</a>
-<br>
-{% endfor %}
+<div class="home-container">
 
 
+    <div>
+        <form action="" method="GET">
+            {% csrf_token %}
+            <input type="text" name="search_query" placeholder="Search users" value="{{ search_query }}">
+            <input type="submit" value="Search">
+        </form>
+
+        {% for profile in profiles %}
+        {% if profile == request.user.profile %}
+        
+        {% else %}
+        <img style="max-width: 30px;" src="{{ profile.profile_image.url }}" alt="">
+        
+        <a href="{% url 'create_chat' profile.id %}">
+            {{profile.name}}
+            <br>
+        </a>
+        <a href="{% url 'create_chat' profile.id %}">
+            <small>@{{profile.username}}</small>
+            <hr>
+        </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+
+    <div>
+        {% for chat in chats %}
+        <a href="{% url 'user_chat' chat.id %}">{{ chat.chat_member_one }} and {{ chat.chat_member_two }} chat</a>
+        <br>
+        {% endfor %}
+    </div>
+</div>
 {% endblock content %}

@@ -80,17 +80,51 @@ def register(request):
 
 
 def user_chats(request, pk):
+    search_query = ""
+
+    if request.GET.get("search_query"):
+        search_query = request.GET.get("search_query")
+
+    profiles = Profile.objects.filter(Q(name__icontains = search_query))
     
     profile = Profile.objects.get(id=pk)
     chats= profile.chat_set.all()
-    
 
-    context = {"chats":chats}
+    exclude_profiles=[]
+    
+    for chat in chats:   
+
+        if request.user.profile == chat.chat_member_one:
+            if chat.chat_member_one in exclude_profiles:
+                pass
+            else:
+                exclude_profiles.append(chat.chat_member_two)
+
+        if request.user.profile == chat.chat_member_two:
+            if chat.chat_member_two in exclude_profiles:
+                pass
+            else:
+                exclude_profiles.append(chat.chat_member_two)
+
+
+    
+    profiles = profiles.exclude(id__in=[user_profile.id for user_profile in exclude_profiles])
+    context = {"chats":chats,"profiles":profiles}
     return render(request, "users/user_chats.html", context)
+
 
 def user_chat(request,pk):
     chat = Chat.objects.get(id=pk)
-
-    #TODO messages
-    context = {"chat":chat}
+    chat_messages = chat.message_set.all()
+    
+    context = {"chat":chat, "chat_messages":chat_messages}
     return render(request, "users/user_chat.html", context)
+
+def create_chat(request, pk):
+    profile = Profile.objects.get(id=pk)
+    chat = Chat.objects.create(
+        chat_member_one = request.user.profile,
+        chat_member_two = profile
+    )
+    chat.save()
+    return redirect("user_chat", pk=chat.id)
