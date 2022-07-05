@@ -1,12 +1,12 @@
-from urllib import response
 from django.shortcuts import redirect, render
 from .forms import CustomUserCreationForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
-from .models import Profile, Message, Chat
-from .forms import AccountForm
+from .models import Profile, Chat
+from .forms import AccountForm, MessageForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 def profile(request, pk):
     profile = Profile.objects.get(id = pk)
@@ -117,8 +117,45 @@ def user_chats(request, pk):
 def user_chat(request,pk):
     chat = Chat.objects.get(id=pk)
     chat_messages = chat.message_set.all()
+
+    form = MessageForm()
+
+    if request.method == "POST":
+        form = MessageForm(request.POST, request.FILES)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.owner = request.user.profile
+            message.chat = chat
+            message.save()
+            return redirect("user_chat", pk=chat.id)
     
-    context = {"chat":chat, "chat_messages":chat_messages}
+    page = request.GET.get("page")
+    paginator = Paginator(chat_messages, 10)
+
+    try:
+        chat_messages = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        chat_messages = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        chat_messages = paginator.page(page)
+
+
+    left_index = (int(page) - 4)
+
+    if left_index <1:
+        left_index = 1
+
+    right_index = (int(page) + 5)
+
+    if right_index > paginator.num_pages:
+        right_index = paginator.num_pages+1
+    
+
+    custom_range= range(left_index,right_index)
+
+    context = {"chat":chat, "chat_messages":chat_messages, "form":form,"custom_range":custom_range,"paginator":paginator,}
     return render(request, "users/user_chat.html", context)
 
 def create_chat(request, pk):

@@ -1,6 +1,6 @@
 {% for post in posts %}
 <a href="{% url 'profile' post.owner.id %}">
-    <img style="max-width: 30px;" src="{{ post.owner.profile_image.url }}" alt="">
+    <img style="max-width: 40px; border-radius: 50%;" src="{{ post.owner.profile_image.url }}" alt="">
     {{ post.owner.name }}
 </a>
 <br>

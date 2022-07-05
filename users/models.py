@@ -39,10 +39,14 @@ class Message(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, null=True, blank=True)
     body = models.CharField(max_length=10000 ,null=True, blank=True)
+    message_image = models.ImageField(null=True, blank=True, upload_to="message/")
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.body)
+    
+    class Meta:
+        ordering = ["-created"]
 
 
 

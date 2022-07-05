@@ -10,11 +10,9 @@
 
 {% if search_query %}
 
-    {% include 'profile.html' with profiles=profiles %}
-
 
     {% for profile in profiles %}
-    <img style="max-width: 30px;" src="{{ profile.profile_image.url }}" alt="">
+    <img style="max-width: 40px; border-radius: 50%;" src="{{ profile.profile_image.url }}" alt="">
     
     <a href="{% url 'profile' profile.id %}">
         {{profile.name}}
