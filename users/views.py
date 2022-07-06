@@ -84,7 +84,7 @@ def register(request):
     context = {"page":page, "form":form}
     return render(request,"users/login_register.html", context)
 
-
+@login_required(login_url="login")
 def user_chats(request, pk):
     search_query = ""
 
@@ -119,7 +119,7 @@ def user_chats(request, pk):
     context = {"chats":chats,"profiles":profiles}
     return render(request, "users/user_chats.html", context)
 
-
+@login_required(login_url="login")
 def user_chat(request,pk):
     chat = Chat.objects.get(id=pk)
     chat_messages = chat.message_set.all()
@@ -164,6 +164,7 @@ def user_chat(request,pk):
     context = {"chat":chat, "chat_messages":chat_messages, "form":form,"custom_range":custom_range,"paginator":paginator,}
     return render(request, "users/user_chat.html", context)
 
+@login_required(login_url="login")
 def create_chat(request, pk):
     profile = Profile.objects.get(id=pk)
     chat = Chat.objects.create(

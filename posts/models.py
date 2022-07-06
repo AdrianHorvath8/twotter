@@ -31,7 +31,12 @@ class Comment(models.Model):
 
 
     def __str__(self):
-        return str(self.comentator)
+        return str(self.body)
+
+    class Meta:
+        ordering = ["-created"]
+
+
 
 class Post(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,

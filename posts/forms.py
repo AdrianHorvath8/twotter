@@ -1,6 +1,6 @@
 
 from django.forms import ModelForm
-from .models import Post
+from .models import Post, Comment
 
 
 class PostForm(ModelForm):
@@ -12,3 +12,10 @@ class PostForm(ModelForm):
         super(PostForm, self).__init__(*args, **kwargs)
 
         self.fields["body"].widget.attrs.update({"placeholder":"What's happening?"})
+
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["body","comment_image"]

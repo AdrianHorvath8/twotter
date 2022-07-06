@@ -4,9 +4,11 @@ from django.shortcuts import redirect, render
 from django.db.models import Q
 from .models import Post, Tag
 from users.models import Profile
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url="login")
 def posts(request):
     posts = Post.objects.all()
     form = PostForm()
@@ -21,6 +23,7 @@ def posts(request):
     context = {"posts":posts, "form":form}
     return render(request,"posts/posts.html",context)
 
+@login_required(login_url="login")
 def delete_post(request,pk):
     post = Post.objects.get(id=pk)
 
@@ -54,9 +57,23 @@ def tag_view(request,pk):
     return render(request,"posts/tag_view.html", context)
 
 
+@login_required(login_url="login")
 def post_comments(request, pk):
-    post = Post.objects.get(id=pk) 
-    context = {"post":post }
+    post = Post.objects.get(id=pk)
+    comments = post.comment_set.all()
+    form = CommentForm()
+
+    if request.method=="POST":
+        form = CommentForm(request.POST, request.FILES)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.comentator = request.user.profile
+            comment.post = post
+            comment.save()
+            return redirect(post_comments, pk = post.id)
+
+
+    context = {"post":post,"comments":comments,"form":form }
     return render(request,"posts/post_comments.html", context)
 
 
