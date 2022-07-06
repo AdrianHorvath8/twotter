@@ -19,9 +19,15 @@ def profile(request, pk):
 @login_required(login_url="login")
 def account(request,pk):
     
+    
     profile = Profile.objects.get(id = pk)
     posts = profile.owner.all()
     form = AccountForm(instance=profile)
+
+    if request.user.profile == profile:
+        pass
+    else:
+        return redirect("account", pk = request.user.profile.id)
     
 
     if request.method == "POST":

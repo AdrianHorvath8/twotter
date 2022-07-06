@@ -51,7 +51,36 @@
         {% endif %}
         <hr style="border: 3px solid;">
 
-        {% include 'post.html' with posts=posts %}
+
+
+        <!-- POSTS -->
+        {% for post in posts %}
+        <a href="{% url 'profile' post.owner.id %}">
+            <img style="max-width: 40px; border-radius: 50%;" src="{{ post.owner.profile_image.url }}" alt="">
+            {{ post.owner.name }}
+        </a>
+        <br>
+        <small>@{{ post.owner.username }}</small>
+        
+        {{ post.created | timesince }}
+        <br>
+        <a href="{% url 'post_comments' post.id %}">{{ post.body}}</a>
+        
+        {% if post.post_image %}
+        <br>
+        <br>
+        <a href="{% url 'post_comments' post.id %}">
+            <img style="max-width: 200px;" src="{{ post.post_image.url }}" alt="">
+        </a>
+        {% endif %}
+        
+        <!--TODO likes -->
+        <br>
+        <a href="{% url 'delete_post' post.id  %}">Delete</a>
+        
+        <hr>
+        
+        {% endfor %}
         
     </div> 
 </div>

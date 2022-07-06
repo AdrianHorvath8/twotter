@@ -1,9 +1,11 @@
 
+import re
 from django.shortcuts import redirect, render
 from django.db.models import Q
 from .models import Post, Tag
 from users.models import Profile
 from .forms import PostForm
+from django.contrib import messages
 
 def posts(request):
     posts = Post.objects.all()
@@ -18,6 +20,17 @@ def posts(request):
             return redirect("posts")
     context = {"posts":posts, "form":form}
     return render(request,"posts/posts.html",context)
+
+def delete_post(request,pk):
+    post = Post.objects.get(id=pk)
+
+    if request.method=="POST":
+        post.delete()
+        messages.success(request, "Post was delete successfuly")
+        return redirect("account", pk = request.user.profile.id)
+
+    context= {"obj":post}
+    return render(request,"delete_template.html", context)
 
 
 def search(request):
