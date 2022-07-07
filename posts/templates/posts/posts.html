@@ -2,32 +2,32 @@
 
 {% block content %}
 
-<a href="{% url 'posts' %}">Home</a>
-<br>
-{% if request.user.is_authenticated %}
-<a href="{% url 'logout' %}">Logout</a>
-<br>
-<a href="{% url 'account' request.user.profile.id %}">My account</a>
-<br>
-<a href="{% url 'user_chats' request.user.profile.id %}">Messages</a>
-<br>
-{% else %}
-<a href="{% url 'login' %}">Login</a>
-<br>
-{% endif %}
-<a href="{% url 'search' %}">Explore</a>
+    <a href="{% url 'posts' %}">Home</a>
+    <br>
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+        <br>
+        <a href="{% url 'account' request.user.profile.id %}">My account</a>
+        <br>
+        <a href="{% url 'user_chats' request.user.profile.id %}">Messages</a>
+        <br>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <br>
+    {% endif %}
+    <a href="{% url 'search' %}">Explore</a>
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% for field in form %}
-    {{ field.label }}:
-    {{ field }}
-    <p></p>
-    {% endfor %}
-    <input type="submit" value="Twoot">
-</form>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+            {{ field.label }}:
+            {{ field }}
+            <p></p>
+        {% endfor %}
+        <input type="submit" value="Twoot">
+    </form>
 
 
-{% include 'post.html' with posts=posts %}
+    {% include 'post.html' with posts=posts %}
 
 {% endblock content %}

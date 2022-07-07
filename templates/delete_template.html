@@ -2,11 +2,11 @@
 
 {% block content %}
 
-If you delete this it cannot be undone so are you sure that you want to delete it ?
-<form action="" method="POST">
-    {% csrf_token %}
-    <input type="submit" value="Delete">
-</form>
-<a href="{{ request.META.HTTP_REFERER }}">No take me back</a>
+    If you delete this it cannot be undone so are you sure that you want to delete it ?
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Delete">
+    </form>
+    <a href="{{ request.META.HTTP_REFERER }}">No take me back</a>
 
 {% endblock content %}

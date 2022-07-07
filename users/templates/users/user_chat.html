@@ -2,59 +2,59 @@
 
 {% block content %}
 
-<p><a href="{{ request.META.HTTP_REFERER }}">back button</a></p>
+    <p><a href="{{ request.META.HTTP_REFERER }}">back button</a></p>
 
-<hr style="border: 3px solid;">
-<h2>Send message:</h2>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% for field in form %}
-        {{ field.label }}:
-        {{ field }}
-        <p></p>
+    <hr style="border: 3px solid;">
+    <h2>Send message:</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+            {{ field.label }}:
+            {{ field }}
+            <p></p>
+        {% endfor %}
+        <input type="submit" value="Twoot">
+    </form>
+    <hr style="border: 3px solid;">
+
+
+    {% for message in chat_messages %}
+        {{ message.owner }} <small>{{ message.created | timesince }}</small>
+        <br>
+        {{ message }}
+        <br>
+        {% if message.message_image %}
+            <img style="max-width: 200px;" src="{{ message.message_image.url }}" alt="">
+        {% endif %}
+        <hr>
     {% endfor %}
-    <input type="submit" value="Twoot">
-</form>
-<hr style="border: 3px solid;">
-
-
-{% for message in chat_messages %}
-    {{ message.owner }} <small>{{ message.created | timesince }}</small>
-    <br>
-    {{ message }}
-    <br>
-    {% if message.message_image %}
-        <img style="max-width: 200px;" src="{{ message.message_image.url }}" alt="">
-    {% endif %}
-    <hr>
-{% endfor %}
 
 
 
 
-{% if chat_messages.has_other_pages %}
+    {% if chat_messages.has_other_pages %}
 
-    {% if chat_messages.has_previous %}
-        <a href="?page={{ chat_messages.previous_page_number }}" data-page="{{chat_messages.previous_page_number}}">&#10094;
-        Prev</a>
-    {% endif %}
-
-
-    {% for page in custom_range %}
-
-        {% if page == chat_messages.number %}
-            <a href="?page={{page}}" data-page="{{page}}">{{page}}</a>
-        {% else %}
-            <a href="?page={{page}}" data-page="{{page}}">{{page}}</a>
+        {% if chat_messages.has_previous %}
+            <a href="?page={{ chat_messages.previous_page_number }}" data-page="{{chat_messages.previous_page_number}}">&#10094;
+            Prev</a>
         {% endif %}
 
-    {% endfor %}
 
-    {% if chat_messages.has_next %}
-        <a href="?page={{ chat_messages.next_page_number }}" data-page="{{chat_messages.next_page_number}}">Next &#10095;</a>
+        {% for page in custom_range %}
+
+            {% if page == chat_messages.number %}
+                <a href="?page={{page}}" data-page="{{page}}">{{page}}</a>
+            {% else %}
+                <a href="?page={{page}}" data-page="{{page}}">{{page}}</a>
+            {% endif %}
+
+        {% endfor %}
+
+        {% if chat_messages.has_next %}
+            <a href="?page={{ chat_messages.next_page_number }}" data-page="{{chat_messages.next_page_number}}">Next &#10095;</a>
+        {% endif %}
+
+
     {% endif %}
-
-
-{% endif %}
 
 {% endblock content %}

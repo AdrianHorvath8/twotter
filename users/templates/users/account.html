@@ -1,60 +1,60 @@
 {% extends "main.html" %}
 
 {% block content %}
-<style>
-    .home-container {
-        display: grid;
-        grid-template-columns: 3fr 3fr;
-    }
-</style>
-<div class="home-container">
-    <h1> Edit your profile </h1>
+    <style>
+        .home-container {
+            display: grid;
+            grid-template-columns: 3fr 3fr;
+        }
+    </style>
+    <div class="home-container">
+        <h1> Edit your profile </h1>
 
-    <p></p>
+        <p></p>
 
-    <div>
-        <form action="" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% for field in form %}
-                {{ field.label }}:
-                {{ field }}
-                <p></p>
-            {% endfor %}
-            <input type="submit" value="Edit account">
-        </form>
+        <div>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                    {{ field.label }}:
+                    {{ field }}
+                    <p></p>
+                {% endfor %}
+                <input type="submit" value="Edit account">
+            </form>
+        </div>
+        <div>
+            {{ profile.name }}
+
+            <br>
+            <small>@{{ profile.username }}</small>
+
+            <br>
+            <img style="max-width: 200px;" src="{{ profile.profile_image.url }}" alt="">
+
+            <br>
+            {% if profile.short_info %}
+                {{ profile.short_info }}
+            {% endif %}
+
+            <br>
+            {% if profile.location %}
+                {{ profile.location }}
+            {% endif %}
+
+            <br>
+            {{ profile.email }}
+
+            <br>
+            {% if profile.website %}
+                <a  href="{{ profile.website }}">Website</a> 
+            {% endif %}
+            <hr style="border: 3px solid;">
+
+
+
+            <!-- POSTS -->
+            {% include 'post.html' with posts=posts %}
+        </div> 
     </div>
-    <div>
-        {{ profile.name }}
-
-        <br>
-        <small>@{{ profile.username }}</small>
-
-        <br>
-        <img style="max-width: 200px;" src="{{ profile.profile_image.url }}" alt="">
-
-        <br>
-        {% if profile.short_info %}
-            {{ profile.short_info }}
-        {% endif %}
-
-        <br>
-        {% if profile.location %}
-            {{ profile.location }}
-        {% endif %}
-
-        <br>
-        {{ profile.email }}
-
-        <br>
-        {% if profile.website %}
-            <a  href="{{ profile.website }}">Website</a> 
-        {% endif %}
-        <hr style="border: 3px solid;">
-
-
-
-        <!-- POSTS -->
-        {% include 'post.html' with posts=posts %}
-    </div> 
-</div>
 {% endblock content %}

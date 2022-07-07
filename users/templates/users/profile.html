@@ -2,36 +2,36 @@
 
 {% block content %}
 
-<p></p>
-<strong>{{ profile.name }}</strong>
+    <p></p>
+    <strong>{{ profile.name }}</strong>
 
-<br>
-<small>@{{ profile.username }}</small>
+    <br>
+    <small>@{{ profile.username }}</small>
 
-<br>
-<img style="max-width: 200px;" src="{{ profile.profile_image.url }}" alt="">
+    <br>
+    <img style="max-width: 200px;" src="{{ profile.profile_image.url }}" alt="">
 
-<br>
-{% if profile.short_info %}
-    {{ profile.short_info }}
-{% endif %}
+    <br>
+    {% if profile.short_info %}
+        {{ profile.short_info }}
+    {% endif %}
 
-<br>
-{% if profile.location %}
-    {{ profile.location }}
-{% endif %}
+    <br>
+    {% if profile.location %}
+        {{ profile.location }}
+    {% endif %}
 
-<br>
-{{ profile.email }}
+    <br>
+    {{ profile.email }}
 
-<br>
-{% if profile.website %}
-    <a href="{{ profile.short_info }}">Website</a>
-{% endif %}
+    <br>
+    {% if profile.website %}
+        <a href="{{ profile.short_info }}">Website</a>
+    {% endif %}
 
-<hr style="border: 3px solid;">
+    <hr style="border: 3px solid;">
 
 
-{% include 'post.html' with posts=posts %}
+    {% include 'post.html' with posts=posts %}
 
 {% endblock content %}
