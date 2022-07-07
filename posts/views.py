@@ -2,7 +2,7 @@
 import re
 from django.shortcuts import redirect, render
 from django.db.models import Q
-from .models import Post, Tag
+from .models import Post, Tag, Comment
 from users.models import Profile
 from .forms import PostForm, CommentForm
 from django.contrib import messages
@@ -27,13 +27,18 @@ def posts(request):
 def delete_post(request,pk):
     post = Post.objects.get(id=pk)
 
+    if request.user.profile == post.owner:
+        pass
+    else:
+        return redirect("posts")
+
     if request.method=="POST":
         post.delete()
         messages.success(request, "Post was delete successfuly")
-        return redirect("account", pk = request.user.profile.id)
+        return redirect(request.GET["next"] if "next" in request.GET else "posts") 
 
-    context= {"obj":post}
-    return render(request,"delete_template.html", context)
+    
+    return render(request,"delete_template.html")
 
 
 def search(request):
@@ -76,4 +81,20 @@ def post_comments(request, pk):
     context = {"post":post,"comments":comments,"form":form }
     return render(request,"posts/post_comments.html", context)
 
+
+@login_required(login_url="login")
+def delete_comment(request, pk):
+    comment = Comment.objects.get(id=pk)
+
+
+    if request.user.profile == comment.comentator:
+        pass
+    else:
+        return redirect("posts")
+
+    if request.method=="POST":
+        comment.delete()
+        messages.success(request, "Comment was delete successfuly")
+        return redirect(request.GET["next"] if "next" in request.GET else "posts")
+    return render(request,"delete_template.html")
 

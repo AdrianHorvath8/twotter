@@ -25,7 +25,7 @@
 <!--TODO likes -->
 <hr style="border: 3px solid;">
 
-
+<!-- Comments -->
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% for field in form %}
@@ -37,6 +37,7 @@
 </form>
 
 <hr style="border: 3px solid;">
+
 {% for comment in comments %}
 <a href="{% url 'profile' comment.comentator.id %}">
     <img style="max-width: 30px;" src="{{ comment.comentator.profile_image.url }}" alt="">
@@ -55,6 +56,10 @@
 
 <img style="max-width: 200px;" src="{{ comment.comment_image.url }}" alt="">
 <br>
+{% endif %}
+
+{% if request.user.profile == comment.comentator %}
+<a href="{% url 'delete_comment' comment.id %}?next={{ request.path }}">Delete</a>
 {% endif %}
 <hr>
 {% endfor %}

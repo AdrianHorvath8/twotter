@@ -8,6 +8,7 @@ urlpatterns = [
     path("search/", views.search, name="search"),
     path("tag/<str:pk>/", views.tag_view, name="tag_view"),
     path("post_comments/<str:pk>/", views.post_comments, name="post_comments"),
-    path("delete_post/<str:pk>/", views.delete_post, name="delete_post")
+    path("delete_post/<str:pk>/", views.delete_post, name="delete_post"),
+    path("delete_comment/<str:pk>/", views.delete_comment, name="delete_comment")
 ]
 

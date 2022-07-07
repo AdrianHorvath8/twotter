@@ -30,6 +30,7 @@
         <br>
     {% endfor %}
 
+    {% include 'post.html' with posts=posts %}
 {% else %}
 
     {% for tag in tags %}
@@ -37,5 +38,6 @@
         <br>
     {% endfor %}
 
+    
 {% endif %}
 {% endblock content %}
