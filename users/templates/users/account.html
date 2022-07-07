@@ -54,7 +54,67 @@
 
 
             <!-- POSTS -->
-            {% include 'post.html' with posts=posts %}
+            <h2>Posts:</h2>
+            {% include 'post.html' with posts=user_posts %}
+            <hr style="border: 3px solid;">
+
+            <!-- Comments -->
+            <h2>Comments:</h2>
+            {% for comment in comments %}
+                {% if comment.comentator == request.user.profile %}
+                    <!-- commented POST -->
+                    <a href="{% url 'profile' comment.post.owner.id %}">
+                        <img style="max-width: 40px; border-radius: 50%;" src="{{ comment.post.owner.profile_image.url }}" alt="">
+                        {{ comment.post.owner.name }}
+                    </a>
+                    <br>
+                    <small>@{{ comment.post.owner.username }}</small>
+                    
+                    {{ comment.post.created | timesince }}
+                    <br>
+                    <a href="{% url 'post_comments' comment.post.id %}">{{ comment.post.body}}</a>
+                    
+                    {% if comment.post.post_image %}
+                    <br>
+                    <br>
+                    <a href="{% url 'post_comments' comment.post.id %}">
+                        <img style="max-width: 200px;" src="{{ comment.post.post_image.url }}" alt="">
+                    </a>
+                    {% endif %}
+                    
+                    <!--TODO likes -->
+                    
+                    <hr>
+
+                    <!-- Comment -->
+                    <span style="font-size:0.5em">
+                    <a href="{% url 'profile' comment.comentator.id %}">
+                        <img style="max-width: 30px;" src="{{ comment.comentator.profile_image.url }}" alt="">
+                        {{ comment.comentator.name }}
+                    </a>
+                    <br>
+                    <small>@{{ comment.comentator.username }}</small>
+                    
+                    {{ comment.created | timesince }}
+                    <br>
+                    {{ comment.body}}
+                    <br>
+                    {% if comment.comment_image %}
+                    
+                    <br>
+                        <img style="max-width: 200px;" src="{{ comment.comment_image.url }}" alt="">
+                        <br>
+                    {% endif %}
+                    
+                    {% if request.user.profile == comment.comentator %}
+                        <a href="{% url 'delete_comment' comment.id %}?next={{ request.path }}">Delete</a>
+                    {% endif %}
+                    
+                    </span>
+                <hr style="border: 3px solid;">
+                {% endif %}
+                
+            {% endfor %}
         </div> 
     </div>
 {% endblock content %}

@@ -3,6 +3,7 @@ from .forms import CustomUserCreationForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
 from .models import Profile, Chat
+from posts.models import Post
 from .forms import AccountForm, MessageForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -19,9 +20,17 @@ def profile(request, pk):
 @login_required(login_url="login")
 def account(request,pk):
     
+    posts = Post.objects.all()
+    comments = Post.objects.none()
+    for post in posts:
+        comments = comments.union(post.comment_set.all())
     
+    
+
+
     profile = Profile.objects.get(id = pk)
-    posts = profile.owner.all()
+    user_posts = profile.owner.all()
+    
     form = AccountForm(instance=profile)
 
     if request.user.profile == profile:
@@ -36,7 +45,7 @@ def account(request,pk):
             form.save()
             return redirect("account", pk=request.user.profile.id)
 
-    context = {"profile":profile,"form":form, "posts":posts}
+    context = {"profile":profile,"form":form, "user_posts":user_posts, "comments":comments}
     return render(request,"users/account.html", context)
 
 
