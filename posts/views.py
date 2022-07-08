@@ -113,3 +113,19 @@ def post_remove_like(request, pk):
     post.like.remove(request.user.profile)
     
     return redirect(request.GET["next"] if "next" in request.GET else "posts")
+
+
+@login_required(login_url="login")
+def comment_like(request,pk):
+    comment = Comment.objects.get(id = pk)
+    comment.like.add(request.user.profile)
+    
+    return redirect(request.GET["next"] if "next" in request.GET else "posts")
+
+
+@login_required(login_url="login")
+def comment_remove_like(request, pk):
+    comment = Comment.objects.get(id = pk)
+    comment.like.remove(request.user.profile)
+    
+    return redirect(request.GET["next"] if "next" in request.GET else "posts")

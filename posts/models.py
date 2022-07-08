@@ -23,10 +23,7 @@ class Comment(models.Model):
     comment_image = models.ImageField(blank=True, null=True, upload_to="comment/")    
     body = models.CharField( max_length=500 ,null=True, blank=True)
     post = models.ForeignKey("Post", on_delete=models.CASCADE, blank=True, null=True)
-    VOTE_TYPE = (
-        ("up", "Up vote"),
-        ("down", "Down vote"),
-    )
+    like = models.ManyToManyField("users.Profile", blank=True, related_name="like")
     created = models.DateTimeField(auto_now_add=True)
 
 
