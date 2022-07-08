@@ -19,8 +19,15 @@
             <img style="max-width: 200px;" src="{{ post.post_image.url }}" alt="">
         </a>
     {% endif %}
-        
-    <!--TODO likes -->
+    
+    
+    {% if request.user.profile in post.like.all %}
+        <br>
+        {{ post.like.count }} <a href="{% url 'post_remove_like' post.id %}?next={{request.path}}">Remove like</a>
+    {% else %}
+        <br>
+        {{ post.like.count }} <a href="{% url 'post_like' post.id %}?next={{request.path}}">Like</a>
+    {% endif %}
     
     {% if request.user.profile == post.owner %}
         <br>

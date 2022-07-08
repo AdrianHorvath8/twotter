@@ -98,3 +98,18 @@ def delete_comment(request, pk):
         return redirect(request.GET["next"] if "next" in request.GET else "posts")
     return render(request,"delete_template.html")
 
+
+@login_required(login_url="login")
+def post_like(request,pk):
+    post = Post.objects.get(id = pk)
+    post.like.add(request.user.profile)
+    
+    return redirect(request.GET["next"] if "next" in request.GET else "posts")
+
+
+@login_required(login_url="login")
+def post_remove_like(request, pk):
+    post = Post.objects.get(id = pk)
+    post.like.remove(request.user.profile)
+    
+    return redirect(request.GET["next"] if "next" in request.GET else "posts")

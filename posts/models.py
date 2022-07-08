@@ -44,10 +44,7 @@ class Post(models.Model):
     owner = models.ForeignKey("users.Profile", on_delete=models.SET_NULL, related_name="owner" , null=True, blank=True)
     post_image = models.ImageField(blank=True, null=True, upload_to="post/")    
     body = models.CharField(max_length=500 ,null=True, blank=True)
-    VOTE_TYPE = (
-        ("up", "Up vote"),
-        ("down", "Down vote"),
-    )
+    like = models.ManyToManyField("users.Profile", blank=True, related_name="likes")
     tag = models.ManyToManyField(Tag, blank=True, related_name="tag")
     created = models.DateTimeField(auto_now_add=True)
 

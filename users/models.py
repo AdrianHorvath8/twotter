@@ -9,7 +9,7 @@ class Profile(models.Model):
     primary_key=True, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=150, null=True, blank=True)
-    username = models.CharField(max_length=150, null=True, blank=True)
+    username = models.CharField(max_length=150, null=True, blank=True, unique=True)
     location = models.CharField(max_length=150, null=True, blank=True)
     profile_image = models.ImageField(null=False, blank=False, upload_to="profiles/", default="profiles/user-default.png")
     email = models.EmailField(max_length=200,null=True, blank=True)
