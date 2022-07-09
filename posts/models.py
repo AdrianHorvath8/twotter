@@ -6,14 +6,6 @@ import uuid
 
 
 
-class Tag(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, unique=True,
-    primary_key=True, editable=False)
-    name = models.CharField(max_length=100, null=True, blank=True)
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return str(self.name)
 
 
 class Comment(models.Model):
@@ -42,7 +34,6 @@ class Post(models.Model):
     post_image = models.ImageField(blank=True, null=True, upload_to="post/")    
     body = models.CharField(max_length=500 ,null=True, blank=True)
     like = models.ManyToManyField("users.Profile", blank=True, related_name="likes")
-    tag = models.ManyToManyField(Tag, blank=True, related_name="tag")
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

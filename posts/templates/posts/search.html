@@ -25,10 +25,7 @@
         
         {% endfor %}
 
-        {% for tag in tags %}
-            <a href="{% url 'tag_view' tag.id %}">#{{ tag.name }}</a>
-            <br>
-        {% endfor %}
+        
 
         {% include 'post.html' with posts=posts %}
     {% else %}
