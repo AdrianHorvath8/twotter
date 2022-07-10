@@ -12,6 +12,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 def profile(request, pk):
     profile = Profile.objects.get(id = pk)
     posts = profile.owner.all()
+    
 
     context = {"profile":profile,"posts":posts}
     return render(request,"users/profile.html", context)
@@ -182,3 +183,18 @@ def create_chat(request, pk):
     )
     chat.save()
     return redirect("user_chat", pk=chat.id)
+
+
+@login_required(login_url="login")
+def following(request, pk):
+    profile = Profile.objects.get(id=pk)
+    request.user.profile.following.add(profile.user)
+    profile.followers.add(request.user)
+    return redirect(request.GET["next"] if "next" in request.GET else "posts")
+
+@login_required(login_url="login")
+def unfollowing(request, pk):
+    profile = Profile.objects.get(id=pk)
+    request.user.profile.following.remove(profile.user)
+    profile.followers.remove(request.user)
+    return redirect(request.GET["next"] if "next" in request.GET else "posts")

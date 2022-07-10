@@ -58,8 +58,7 @@ def search(request):
 
 def topic(request, pk):
     topic = Topic.objects.get(id=pk)
-    topic_body = topic.body
-    posts = Post.objects.filter(body__icontains = topic_body)
+    posts = Post.objects.filter(body__icontains = topic.body)
     context = {"topic":topic,"posts":posts}
     return render(request,"posts/topic.html", context)
 

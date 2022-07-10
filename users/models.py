@@ -15,7 +15,8 @@ class Profile(models.Model):
     email = models.EmailField(max_length=200,null=True, blank=True)
     short_info = models.CharField(max_length=200, null=True, blank=True)
     website = models.CharField(max_length=200, null=True, blank=True)
-    followers = models.ManyToManyField(User,related_name="followers")
+    following = models.ManyToManyField(User,related_name="following", blank=True)
+    followers = models.ManyToManyField(User,related_name="followers", blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

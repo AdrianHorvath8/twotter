@@ -29,6 +29,9 @@
             <br>
             <small>@{{ profile.username }}</small>
 
+            {{ profile.following.all.count }} Following  {{ profile.followers.all.count }} Followers
+            <br>
+
             <br>
             <img style="max-width: 200px;" src="{{ profile.profile_image.url }}" alt="">
 

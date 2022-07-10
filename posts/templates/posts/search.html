@@ -12,17 +12,30 @@
 
 
         {% for profile in profiles %}
-            <img style="max-width: 40px; border-radius: 50%;" src="{{ profile.profile_image.url }}" alt="">
-            
-            <a href="{% url 'profile' profile.id %}">
-                {{profile.name}}
-                <br>
-            </a>
-            <a href="{% url 'profile' profile.id %}">
-                <small>@{{profile.username}}</small>
-                <hr>
-            </a>
-        
+            {% if request.user.profile.id == profile.id %}
+                <img style="max-width: 40px; border-radius: 50%;" src="{{ profile.profile_image.url }}" alt="">
+                
+                <a href="{% url 'account' profile.id %}">
+                    {{profile.name}}
+                    <br>
+                </a>
+                <a href="{% url 'account' profile.id %}">
+                    <small>@{{profile.username}}</small>
+                    <hr>
+                </a>
+            {% else %}
+                <img style="max-width: 40px; border-radius: 50%;" src="{{ profile.profile_image.url }}" alt="">
+                
+                <a href="{% url 'profile' profile.id %}">
+                    {{profile.name}}
+                    <br>
+                </a>
+                <a href="{% url 'profile' profile.id %}">
+                    <small>@{{profile.username}}</small>
+                    <hr>
+                </a>
+            {% endif %}
+                 
         {% endfor %}
 
         
@@ -32,6 +45,7 @@
 
         {% for topic in topics %}
             <a href="{% url 'topic' topic.id %}">#{{ topic.body }}</a>
+            
             <br>
         {% endfor %}
 

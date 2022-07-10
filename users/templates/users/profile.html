@@ -7,7 +7,18 @@
 
     <br>
     <small>@{{ profile.username }}</small>
+    <br>
+    
+    
+    {% if profile.user in request.user.profile.following.all %}
+        <a href="{% url 'unfollowing' profile.id %}?next={{request.path}}">unfollow</a>
+    {% else %}
+        <a href="{% url 'following' profile.id %}?next={{request.path}}">follow</a>
+    {% endif %}
 
+    <br>
+    {{ profile.following.all.count }} Following {{ profile.followers.all.count }} Followers
+    
     <br>
     <img style="max-width: 200px;" src="{{ profile.profile_image.url }}" alt="">
 
