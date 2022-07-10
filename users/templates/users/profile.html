@@ -17,7 +17,8 @@
     {% endif %}
 
     <br>
-    {{ profile.following.all.count }} Following {{ profile.followers.all.count }} Followers
+    <a href="{% url 'following_users' profile.id %}">{{ profile.following.all.count }} Following</a> 
+    <a href="{% url 'followers_users' profile.id %}">{{ profile.followers.all.count }} Followers</a>
     
     <br>
     <img style="max-width: 200px;" src="{{ profile.profile_image.url }}" alt="">

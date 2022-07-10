@@ -1,0 +1,34 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+    {% if page == "following" %}
+        {% for profile in following_profiles %}
+            <img style="max-width: 40px; border-radius: 50%;" src="{{ profile.profile_image.url }}" alt="">
+            
+            <a href="{% url 'profile' profile.id %}">
+                {{profile.name}}
+                <br>
+            </a>
+            <a href="{% url 'profile' profile.id %}">
+                <small>@{{profile.username}}</small>
+                <hr>
+            </a>
+        {% endfor %}
+    {% else %}
+        {% for profile in followers_profiles %}
+            <img style="max-width: 40px; border-radius: 50%;" src="{{ profile.profile_image.url }}" alt="">
+            
+            <a href="{% url 'profile' profile.id %}">
+                {{profile.name}}
+                <br>
+            </a>
+            <a href="{% url 'profile' profile.id %}">
+                <small>@{{profile.username}}</small>
+                <hr>
+            </a>
+        {% endfor %}
+    {% endif %}
+
+
+{% endblock content %}

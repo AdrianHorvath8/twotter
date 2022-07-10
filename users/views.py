@@ -94,6 +94,7 @@ def register(request):
     context = {"page":page, "form":form}
     return render(request,"users/login_register.html", context)
 
+
 @login_required(login_url="login")
 def user_chats(request, pk):
     search_query = ""
@@ -128,6 +129,7 @@ def user_chats(request, pk):
     profiles = profiles.exclude(id__in=[user_profile.id for user_profile in exclude_profiles])
     context = {"chats":chats,"profiles":profiles}
     return render(request, "users/user_chats.html", context)
+
 
 @login_required(login_url="login")
 def user_chat(request,pk):
@@ -174,6 +176,7 @@ def user_chat(request,pk):
     context = {"chat":chat, "chat_messages":chat_messages, "form":form,"custom_range":custom_range,"paginator":paginator,}
     return render(request, "users/user_chat.html", context)
 
+
 @login_required(login_url="login")
 def create_chat(request, pk):
     profile = Profile.objects.get(id=pk)
@@ -192,9 +195,29 @@ def following(request, pk):
     profile.followers.add(request.user)
     return redirect(request.GET["next"] if "next" in request.GET else "posts")
 
+
 @login_required(login_url="login")
 def unfollowing(request, pk):
     profile = Profile.objects.get(id=pk)
     request.user.profile.following.remove(profile.user)
     profile.followers.remove(request.user)
     return redirect(request.GET["next"] if "next" in request.GET else "posts")
+
+
+def followers_users(request, pk):
+    profile = Profile.objects.get(id= pk)
+    followers = profile.followers.all()
+    followers_profiles = Profile.objects.filter(id__in=[user.profile.id for user in followers])
+    
+    context = {"followers_profiles":followers_profiles}
+    return render(request, "users/following_followers.html", context)
+
+
+def following_users(request, pk):
+    profile = Profile.objects.get(id= pk)
+    page = "following"
+    following = profile.following.all()
+    following_profiles = Profile.objects.filter(id__in=[user.profile.id for user in following])
+    
+    context = {"following_profiles":following_profiles, "page":page}
+    return render(request, "users/following_followers.html", context)

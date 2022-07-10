@@ -9,6 +9,8 @@ urlpatterns = [
     path("create_chat/<str:pk>/", views.create_chat, name="create_chat"),
     path("following/<str:pk>/", views.following, name="following"),
     path("unfollowing/<str:pk>/", views.unfollowing, name="unfollowing"),
+    path("followers_users/<str:pk>/", views.followers_users, name="followers_users"),
+    path("following_users/<str:pk>/", views.following_users, name="following_users"),
 
     path('login_user/', views.login_user, name='login'),
     path('logout_user/', views.logout_user, name='logout'),
