@@ -4,10 +4,6 @@ from django.db import models
 import uuid
 
 
-
-
-
-
 class Comment(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,
     primary_key=True, editable=False)
@@ -43,3 +39,14 @@ class Post(models.Model):
         ordering = ["-created"]
 
 
+class Topic(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, unique=True,
+    primary_key=True, editable=False)
+    body = models.CharField( max_length=100 ,null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.body)
+
+    class Meta:
+        ordering = ["?"]

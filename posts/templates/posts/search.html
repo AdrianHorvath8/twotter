@@ -30,8 +30,8 @@
         {% include 'post.html' with posts=posts %}
     {% else %}
 
-        {% for tag in tags %}
-            <a href="{% url 'tag_view' tag.id %}">#{{ tag.name }}</a>
+        {% for topic in topics %}
+            <a href="{% url 'topic' topic.id %}">#{{ topic.body }}</a>
             <br>
         {% endfor %}
 

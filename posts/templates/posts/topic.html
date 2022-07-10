@@ -1,0 +1,11 @@
+{% extends "main.html" %}
+
+{% block content %}
+    <h2>{{ topic }}</h2>
+    {{ posts.count }} twoot{{ posts.count|pluralize:"s" }}
+    <p></p>
+    
+    {% include 'post.html' with posts=posts %}
+    
+
+{% endblock content %}
