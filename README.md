@@ -21,6 +21,7 @@ You need to have installed python and VScode.
   * 3 - source .venv/Scripts/activate
 * pip install -r requirements.txt
 * set up your database
+* put information about your database into the settings.py
 * python manage.py makemigrations
 * python manage.py migrate
 * python manage.py runserver
@@ -34,7 +35,7 @@ You need to have installed python and VScode.
 
 ## Features
 
-
+* Creating posts (Twoot)
 
 
 ## Versioning
