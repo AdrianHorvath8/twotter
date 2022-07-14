@@ -11,7 +11,16 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url="login")
 def posts(request):
-    posts = Post.objects.all()
+    following = request.user.profile.following.all()
+    following_profiles = Profile.objects.filter(id__in=[user.profile.id for user in following])
+    posts = Post.objects.filter(Q(owner__in=[owner for owner in following_profiles]) | Q(owner = request.user.profile))
+    profiles = Profile.objects.all()
+    profiles = profiles.exclude(
+        Q(id__in=[user_profile.id for user_profile in following_profiles]) | 
+        Q(id = request.user.profile.id) 
+    ).order_by("?")[:5]
+
+    
     form = PostForm()
 
     if request.method == "POST":
@@ -21,7 +30,7 @@ def posts(request):
             post.owner = request.user.profile
             post.save()
             return redirect("posts")
-    context = {"posts":posts, "form":form}
+    context = {"posts":posts, "form":form, "profiles":profiles}
     return render(request,"posts/posts.html",context)
 
 @login_required(login_url="login")
@@ -50,7 +59,7 @@ def search(request):
 
     profiles = Profile.objects.filter(Q(name__icontains = search_query))
     posts = Post.objects.filter(Q(body__icontains = search_query))
-    topics = Topic.objects.all()
+    topics = Topic.objects.all()[:10]
 
 
     context = {"profiles":profiles, "search_query":search_query,"posts":posts,"topics":topics}

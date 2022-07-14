@@ -11,9 +11,9 @@
     
     
     {% if profile.user in request.user.profile.following.all %}
-        <a href="{% url 'unfollowing' profile.id %}?next={{request.path}}">unfollow</a>
+        <a href="{% url 'unfollowing' profile.id %}?next={{request.path}}">Unfollow</a>
     {% else %}
-        <a href="{% url 'following' profile.id %}?next={{request.path}}">follow</a>
+        <a href="{% url 'following' profile.id %}?next={{request.path}}">Follow</a>
     {% endif %}
 
     <br>

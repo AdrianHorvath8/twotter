@@ -1,33 +1,67 @@
 {% extends "main.html" %}
 
 {% block content %}
+    <style>
+        .home-container {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+        }
+    </style>
 
-    <a href="{% url 'posts' %}">Home</a>
-    <br>
-    {% if request.user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a>
+    <div class="home-container">
+        <div>
+        <a href="{% url 'posts' %}">Home</a>
         <br>
-        <a href="{% url 'account' request.user.profile.id %}">My account</a>
-        <br>
-        <a href="{% url 'user_chats' request.user.profile.id %}">Messages</a>
-        <br>
-        {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <br>
-    {% endif %}
-    <a href="{% url 'search' %}">Explore</a>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'logout' %}">Logout</a>
+            <br>
+            <a href="{% url 'account' request.user.profile.id %}">My account</a>
+            <br>
+            <a href="{% url 'user_chats' request.user.profile.id %}">Messages</a>
+            <br>
+            {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <br>
+        {% endif %}
+        <a href="{% url 'search' %}">Explore</a>
+        
+        <hr style="border: 3px solid;">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                {{ field.label }}:
+                {{ field }}
+                <p></p>
+            {% endfor %}
+            <input type="submit" value="Twoot">
+        </form>
+        <hr style="border: 3px solid;">
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% for field in form %}
-            {{ field.label }}:
-            {{ field }}
-            <p></p>
-        {% endfor %}
-        <input type="submit" value="Twoot">
-    </form>
+        
+        {% include 'post.html' with posts=posts %}
+        </div>
 
-    
-    {% include 'post.html' with posts=posts %}
+        <div>
+            <h3>Who to follow:</h3>
+            {% for profile in profiles %}
+                <img style="max-width: 40px; border-radius: 50%;" src="{{ profile.profile_image.url }}" alt="">
+                
+                <a href="{% url 'profile' profile.id %}">
+                    {{profile.name}}
+                    <br>
+                </a>
+                <a href="{% url 'profile' profile.id %}">
+                    <small>@{{profile.username}}</small>
+                    
+                </a>
+                <br>
+                <strong><a href="{% url 'following' profile.id %}?next={{request.path}}">Follow</a></strong>
+                <hr>
+            {% endfor %}
+
+
+        </div>
+
+    </div>
 
 {% endblock content %}
