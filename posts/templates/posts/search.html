@@ -10,7 +10,7 @@
 
     {% if search_query %}
 
-
+        <h2>Profiles:</h2>
         {% for profile in profiles %}
             {% if request.user.profile.id == profile.id %}
                 <img style="max-width: 40px; border-radius: 50%;" src="{{ profile.profile_image.url }}" alt="">
@@ -39,8 +39,21 @@
         {% endfor %}
 
         
-
+        <h2>Posts:</h2>
         {% include 'post.html' with posts=posts %}
+        
+
+        <h2>Comments:</h2>
+        {% include 'comments.html' with comments=comments %}
+        
+
+        <h2>Topics:</h2>
+        {% for topic in topics %}
+            <a href="{% url 'topic' topic.id %}">#{{ topic.body }}</a>
+            
+            <br>
+        {% endfor %}
+
     {% else %}
 
         {% for topic in topics %}

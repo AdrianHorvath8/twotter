@@ -32,8 +32,8 @@ class Chat(models.Model):
     primary_key=True, editable=False)
     chat_member_one = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     chat_member_two =  models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="chat_member_two", null=True, blank=True)
-    
 
+    
 class Message(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,
     primary_key=True, editable=False)

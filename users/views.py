@@ -3,18 +3,23 @@ from .forms import CustomUserCreationForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
 from .models import Profile, Chat
-from posts.models import Post
+from posts.models import Post, Comment
 from .forms import AccountForm, MessageForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
+
+
 def profile(request, pk):
     profile = Profile.objects.get(id = pk)
     posts = profile.owner.all()
+
+    comments = Comment.objects.filter(comentator = profile)
+    print(comments)
     
 
-    context = {"profile":profile,"posts":posts}
+    context = {"profile":profile,"posts":posts, "comments":comments}
     return render(request,"users/profile.html", context)
 
 
@@ -102,7 +107,10 @@ def user_chats(request, pk):
     if request.GET.get("search_query"):
         search_query = request.GET.get("search_query")
 
-    profiles = Profile.objects.filter(Q(name__icontains = search_query))
+    profiles = Profile.objects.filter(
+        Q(name__icontains = search_query) |
+        Q(username__icontains = search_query)
+    )
     
     profile = Profile.objects.get(id=pk)
     chats= profile.chat_set.all().union(profile.chat_member_two.all())
@@ -124,9 +132,10 @@ def user_chats(request, pk):
             else:
                 exclude_profiles.append(chat.chat_member_one)
     
-
+    
     
     profiles = profiles.exclude(id__in=[user_profile.id for user_profile in exclude_profiles])
+    profiles = profiles.order_by("?")[:5]
     context = {"chats":chats,"profiles":profiles}
     return render(request, "users/user_chats.html", context)
 

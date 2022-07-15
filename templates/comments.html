@@ -1,0 +1,70 @@
+{% for comment in comments %}
+        <!-- commented POST -->
+        <a href="{% url 'profile' comment.post.owner.id %}">
+            <img style="max-width: 40px; border-radius: 50%;" src="{{ comment.post.owner.profile_image.url }}" alt="">
+            {{ comment.post.owner.name }}
+        </a>
+        <br>
+        <small>@{{ comment.post.owner.username }}</small>
+
+        {{ comment.post.created | timesince }}
+        <br>
+        <a href="{% url 'post_comments' comment.post.id %}">{{ comment.post.body}}</a>
+
+        {% if comment.post.post_image %}
+            <br>
+            <br>
+            <a href="{% url 'post_comments' comment.post.id %}">
+                <img style="max-width: 200px;" src="{{ comment.post.post_image.url }}" alt="">
+            </a>
+        {% endif %}
+
+        {% if request.user.profile in comment.post.like.all %}
+            <br>
+            {{ comment.post.like.count }} <a href="{% url 'post_remove_like' comment.post.id %}?next={{request.path}}">Remove
+                like</a>
+            {% else %}
+            <br>
+            {{ comment.post.like.count }} <a href="{% url 'post_like' comment.post.id %}?next={{request.path}}">Like</a>
+        {% endif %}
+
+        <hr>
+
+        <!-- Comment -->
+        <span style="font-size:0.5em">
+            <a href="{% url 'profile' comment.comentator.id %}">
+                <img style="max-width: 30px;" src="{{ comment.comentator.profile_image.url }}" alt="">
+                {{ comment.comentator.name }}
+            </a>
+            <br>
+            <small>@{{ comment.comentator.username }}</small>
+
+            {{ comment.created | timesince }}
+            <br>
+            {{ comment.body}}
+            <br>
+            {% if comment.comment_image %}
+
+                <br>
+                <img style="max-width: 200px;" src="{{ comment.comment_image.url }}" alt="">
+                <br>
+            {% endif %}
+
+            {% if request.user.profile in comment.like.all %}
+                <br>
+                {{ comment.like.count }} <a href="{% url 'comment_remove_like' comment.id %}?next={{request.path}}">Remove like</a>
+                {% else %}
+                <br>
+                {{ comment.like.count }} <a href="{% url 'comment_like' comment.id %}?next={{request.path}}">Like</a>
+            {% endif %}
+
+            {% if request.user.profile == comment.comentator %}
+                <br>
+                <a href="{% url 'delete_comment' comment.id %}?next={{ request.path }}">Delete</a>
+            {% endif %}
+
+        </span>
+        <hr style="border: 3px solid;">
+    
+
+{% endfor %}

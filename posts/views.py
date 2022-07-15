@@ -1,6 +1,4 @@
 
-from pydoc_data.topics import topics
-import re
 from django.shortcuts import redirect, render
 from django.db.models import Q
 from .models import Post, Comment, Topic
@@ -57,12 +55,13 @@ def search(request):
     if request.GET.get("search_query"):
         search_query = request.GET.get("search_query")
 
-    profiles = Profile.objects.filter(Q(name__icontains = search_query))
+    profiles = Profile.objects.filter(Q(name__icontains = search_query) | Q(username__icontains = search_query))
     posts = Post.objects.filter(Q(body__icontains = search_query))
-    topics = Topic.objects.all()[:10]
+    topics = Topic.objects.filter(Q(body__icontains = search_query))[:10]
+    comments = Comment.objects.filter(Q(body__icontains = search_query))
 
 
-    context = {"profiles":profiles, "search_query":search_query,"posts":posts,"topics":topics}
+    context = {"profiles":profiles, "search_query":search_query,"posts":posts,"topics":topics,"comments":comments}
     return render(request,"posts/search.html", context)
 
 def topic(request, pk):

@@ -14,7 +14,7 @@ class AccountForm(ModelForm):
     class Meta:
         model = Profile
         fields = "__all__"
-        exclude = ["user","username","followers","post"]
+        exclude = ["user","username","followers","post","following"]
 
 class MessageForm(ModelForm):
     class Meta:

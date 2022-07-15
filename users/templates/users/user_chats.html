@@ -18,7 +18,7 @@
                 <input type="text" name="search_query" placeholder="Search users" value="{{ search_query }}">
                 <input type="submit" value="Search">
             </form>
-
+            <h3>By clicking to user you will create new chat:</h3>
             {% for profile in profiles %}
                 {% if profile == request.user.profile %}
                 

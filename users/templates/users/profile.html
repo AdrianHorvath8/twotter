@@ -43,7 +43,11 @@
 
     <hr style="border: 3px solid;">
 
-
+    <h2>Posts:</h2>
     {% include 'post.html' with posts=posts %}
+
+    <h2>Comments:</h2>
+    {% include 'comments.html' with comments=comments %}
+    
 
 {% endblock content %}
