@@ -3,7 +3,7 @@
 {% block content %}
 {% load static %}
 
-    <p><a href="{{ request.META.HTTP_REFERER }}">back button</a></p>
+    <p><a href="{% url 'user_chats' request.user.profile.id %}">back button</a></p>
 
     <hr style="border: 3px solid;">
     <h2>Send message:</h2>
@@ -45,19 +45,5 @@
 
     <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
     <script src="{% static 'js/infinite.min.js' %}"></script>
-    <script>
-        var infinite = new Waypoint.Infinite({
-            element: $('.infinite-container')[0],
-
-            offset: 'bottom-in-view',
-
-            onBeforePageLoad: function () {
-
-            },
-            onAfterPageLoad: function () {
-
-            }
-
-        });
-    </script>
+    <script src="{% static 'js/scroll_pagination.js' %}"></script>
 {% endblock content %}

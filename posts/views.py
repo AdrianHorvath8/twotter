@@ -41,7 +41,7 @@ def posts(request):
             post.save()
             return redirect("posts")
 
-    context = {"posts":posts, "form":form, "profiles":profiles, "paginator":paginator,}
+    context = {"posts":posts, "form":form, "profiles":profiles,}
     return render(request,"posts/posts.html",context)
 
 @login_required(login_url="login")
@@ -101,8 +101,21 @@ def post_comments(request, pk):
             comment.save()
             return redirect(post_comments, pk = post.id)
 
+    
+    page = request.GET.get("page")
+    paginator = Paginator(comments, 5)
 
-    context = {"post":post,"comments":comments,"form":form }
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        comments = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        comments = paginator.page(page)
+
+
+    context = {"post":post,"comments":comments,"form":form,}
     return render(request,"posts/post_comments.html", context)
 
 

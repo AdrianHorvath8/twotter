@@ -73,19 +73,5 @@
 
     <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
     <script src="{% static 'js/infinite.min.js' %}"></script>
-    <script>
-        var infinite = new Waypoint.Infinite({
-            element: $('.infinite-container')[0],
-
-            offset: 'bottom-in-view',
-
-            onBeforePageLoad: function () {
-                
-            },
-            onAfterPageLoad: function () {
-                
-            }
-
-        });
-    </script>
+    <script src="{% static 'js/scroll_pagination.js' %}"></script>
 {% endblock content %}
