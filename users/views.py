@@ -168,21 +168,7 @@ def user_chat(request,pk):
         page = paginator.num_pages
         chat_messages = paginator.page(page)
 
-
-    left_index = (int(page) - 4)
-
-    if left_index <1:
-        left_index = 1
-
-    right_index = (int(page) + 5)
-
-    if right_index > paginator.num_pages:
-        right_index = paginator.num_pages+1
-    
-
-    custom_range= range(left_index,right_index)
-
-    context = {"chat":chat, "chat_messages":chat_messages, "form":form,"custom_range":custom_range,"paginator":paginator,}
+    context = {"chat":chat, "chat_messages":chat_messages, "form":form,"paginator":paginator,}
     return render(request, "users/user_chat.html", context)
 
 

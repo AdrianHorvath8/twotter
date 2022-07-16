@@ -1,6 +1,7 @@
 {% extends "main.html" %}
 
 {% block content %}
+{% load static %}
 
     <p><a href="{{ request.META.HTTP_REFERER }}">back button</a></p>
 
@@ -17,44 +18,46 @@
     </form>
     <hr style="border: 3px solid;">
 
-
-    {% for message in chat_messages %}
-        {{ message.owner }} <small>{{ message.created | timesince }}</small>
-        <br>
-        {{ message }}
-        <br>
-        {% if message.message_image %}
-            <img style="max-width: 200px;" src="{{ message.message_image.url }}" alt="">
-        {% endif %}
-        <hr>
-    {% endfor %}
-
-
-
-
-    {% if chat_messages.has_other_pages %}
-
-        {% if chat_messages.has_previous %}
-            <a href="?page={{ chat_messages.previous_page_number }}" data-page="{{chat_messages.previous_page_number}}">&#10094;
-            Prev</a>
-        {% endif %}
-
-
-        {% for page in custom_range %}
-
-            {% if page == chat_messages.number %}
-                <a href="?page={{page}}" data-page="{{page}}">{{page}}</a>
-            {% else %}
-                <a href="?page={{page}}" data-page="{{page}}">{{page}}</a>
-            {% endif %}
-
+    <div class="infinite-container">
+        {% for message in chat_messages %}
+            <div class="infinite-item">
+                {{ message.owner }} <small>{{ message.created | timesince }}</small>
+                <br>
+                {{ message }}
+                <br>
+                {% if message.message_image %}
+                    <img style="max-width: 200px;" src="{{ message.message_image.url }}" alt="">
+                {% endif %}
+                <hr>
+            </div>
         {% endfor %}
-
-        {% if chat_messages.has_next %}
-            <a href="?page={{ chat_messages.next_page_number }}" data-page="{{chat_messages.next_page_number}}">Next &#10095;</a>
-        {% endif %}
+    </div>
 
 
+
+
+    
+    {% if chat_messages.has_next %}
+        <a class="infinite-more-link" href="?page={{ chat_messages.next_page_number }}">next</a>
     {% endif %}
 
+
+
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
+    <script>
+        var infinite = new Waypoint.Infinite({
+            element: $('.infinite-container')[0],
+
+            offset: 'bottom-in-view',
+
+            onBeforePageLoad: function () {
+
+            },
+            onAfterPageLoad: function () {
+
+            }
+
+        });
+    </script>
 {% endblock content %}

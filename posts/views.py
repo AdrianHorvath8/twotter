@@ -6,6 +6,7 @@ from users.models import Profile
 from .forms import PostForm, CommentForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 @login_required(login_url="login")
 def posts(request):
@@ -18,6 +19,17 @@ def posts(request):
         Q(id = request.user.profile.id) 
     ).order_by("?")[:5]
 
+    page = request.GET.get("page")
+    paginator = Paginator(posts, 10)
+
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        posts = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        posts = paginator.page(page)
     
     form = PostForm()
 
@@ -28,7 +40,8 @@ def posts(request):
             post.owner = request.user.profile
             post.save()
             return redirect("posts")
-    context = {"posts":posts, "form":form, "profiles":profiles}
+
+    context = {"posts":posts, "form":form, "profiles":profiles, "paginator":paginator,}
     return render(request,"posts/posts.html",context)
 
 @login_required(login_url="login")

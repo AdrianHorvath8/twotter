@@ -1,6 +1,7 @@
 {% extends "main.html" %}
 
 {% block content %}
+{% load static %}
     <style>
         .home-container {
             display: grid;
@@ -37,8 +38,13 @@
         </form>
         <hr style="border: 3px solid;">
 
+        <div class="infinite-container">
+            {% include 'post.html' with posts=posts %}
+            {% if posts.has_next %}
+            <a class="infinite-more-link" href="?page={{ posts.next_page_number }}">next</a>
+            {% endif %}
+        </div>
         
-        {% include 'post.html' with posts=posts %}
         </div>
 
         <div>
@@ -64,4 +70,22 @@
 
     </div>
 
+
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
+    <script>
+        var infinite = new Waypoint.Infinite({
+            element: $('.infinite-container')[0],
+
+            offset: 'bottom-in-view',
+
+            onBeforePageLoad: function () {
+                
+            },
+            onAfterPageLoad: function () {
+                
+            }
+
+        });
+    </script>
 {% endblock content %}
