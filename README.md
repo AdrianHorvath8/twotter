@@ -35,7 +35,8 @@ You need to have installed python and VScode.
 
 ## Features
 
-* Creating posts (Twoot)
+* Creating posts (Twoots)
+* Sending messges to people
 
 
 ## Versioning
