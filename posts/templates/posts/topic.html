@@ -11,6 +11,10 @@
     <strong>There are no twoots in this topic yet but you can <a href="{% url 'posts' %}">create twoot</a> at this topic by including name of this topic in twoot message</strong>
 
     {% endif %}
+
+    {% if comments %}
+        {% include 'comments.html' with comments=comments %}
+    {% endif %}
     
 
 {% endblock content %}

@@ -19,6 +19,7 @@ def posts(request):
         Q(id__in=[user_profile.id for user_profile in following_profiles]) | 
         Q(id = request.user.profile.id) 
     ).order_by("?")[:5]
+    topics = Topic.objects.all().order_by("?")[:10]
 
     bookmarks = Bookmark.objects.filter( profile = request.user.profile)
     for bookmark in bookmarks:
@@ -46,7 +47,7 @@ def posts(request):
             post.save()
             return redirect("posts")
 
-    context = {"posts":posts, "form":form, "profiles":profiles, "bookmark":bookmark}
+    context = {"posts":posts, "form":form, "profiles":profiles, "bookmark":bookmark, "topics":topics}
     return render(request,"posts/posts.html",context)
 
 @login_required(login_url="login")
@@ -85,7 +86,8 @@ def search(request):
 def topic(request, pk):
     topic = Topic.objects.get(id=pk)
     posts = Post.objects.filter(body__icontains = topic.body)
-    context = {"topic":topic,"posts":posts}
+    comments = Comment.objects.filter(body__icontains = topic.body)
+    context = {"topic":topic,"posts":posts, "comments":comments}
     return render(request,"posts/topic.html", context)
 
 

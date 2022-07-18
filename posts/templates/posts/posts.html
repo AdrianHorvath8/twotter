@@ -52,6 +52,11 @@
         </div>
 
         <div>
+            <h3>Trends for you:</h3>
+            {% for topic in topics %}
+            <a href="{% url 'topic' topic.id %}">#{{ topic.body }}</a>
+            <hr>
+            {% endfor %}
             <h3>Who to follow:</h3>
             {% for profile in profiles %}
                 <img style="max-width: 40px; border-radius: 50%;" src="{{ profile.profile_image.url }}" alt="">
