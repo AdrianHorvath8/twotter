@@ -115,10 +115,11 @@ def user_chats(request, pk):
     profile = Profile.objects.get(id=pk)
     chats= profile.chat_set.all().union(profile.chat_member_two.all())
     
-
+    
+    
     exclude_profiles=[]
     
-    for chat in chats:   
+    for chat in chats:
 
         if request.user.profile == chat.chat_member_one:
             if chat.chat_member_one in exclude_profiles:
@@ -167,6 +168,16 @@ def user_chat(request,pk):
     except EmptyPage:
         page = paginator.num_pages
         chat_messages = paginator.page(page)
+
+
+    for message in chat_messages:
+        if message.owner != request.user.profile:
+            if message.is_read == False:
+                message.is_read = True
+                message.save()
+
+    
+
 
     context = {"chat":chat, "chat_messages":chat_messages, "form":form,"paginator":paginator,}
     return render(request, "users/user_chat.html", context)

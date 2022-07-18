@@ -41,13 +41,21 @@
         <div>
 
             {% for chat in chats %}
+                
                 {% if chat.chat_member_one == request.user.profile %}
-                    <a href="{% url 'user_chat' chat.id %}">{{ chat.chat_member_two.name }} @{{ chat.chat_member_two.username }} chat</a>      
+                    <a href="{% url 'user_chat' chat.id %}">{{ chat.chat_member_two.name }} @{{ chat.chat_member_two.username }} chat</a>
+                    {% for chat_member_two in chat.get_unread_messages|slice:":1"%}
+                        {{ chat_member_two }} Unread messages                       
+                    {% endfor %}
                     <br>
                 {% else %}
-                    <a href="{% url 'user_chat' chat.id %}">{{ chat.chat_member_one.name }} @{{ chat.chat_member_one.username }} chat</a>
+                    <a href="{% url 'user_chat' chat.id %}">{{ chat.chat_member_one.name }} @{{ chat.chat_member_one.username }} chat</a> 
+                    {% for chat_member_one in chat.get_unread_messages|slice:"1:"  %}
+                        {{ chat_member_one }} Unread messages                
+                    {% endfor %}
                     <br>
                 {% endif %}
+                
             {% endfor %}
         </div>
     </div>

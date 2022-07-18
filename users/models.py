@@ -32,6 +32,19 @@ class Chat(models.Model):
     primary_key=True, editable=False)
     chat_member_one = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     chat_member_two =  models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="chat_member_two", null=True, blank=True)
+    @property
+    def get_unread_messages(self):
+        count_chat_member_one = 0
+        count_chat_member_two = 0
+        for message in self.message_set.all():
+            if message.owner == self.chat_member_one:     
+                if message.is_read == False:
+                    count_chat_member_one += 1
+                    
+            if message.owner == self.chat_member_two :     
+                if message.is_read == False:
+                    count_chat_member_two += 1
+        return count_chat_member_two, count_chat_member_one
 
     
 class Message(models.Model):
@@ -41,6 +54,7 @@ class Message(models.Model):
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, null=True, blank=True)
     body = models.CharField(max_length=10000 ,null=True, blank=True)
     message_image = models.ImageField(null=True, blank=True, upload_to="message/")
+    is_read = models.BooleanField(default=False, null=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -48,6 +62,8 @@ class Message(models.Model):
     
     class Meta:
         ordering = ["-created"]
+
+    
 
 
 
