@@ -1,9 +1,10 @@
+from venv import create
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from posts.models import Post, Comment
 from users.models import Profile, Chat, Message
-from .serializers import PostsSerializer
+from .serializers import PostsSerializer, ProfileSerializer
 
 @api_view(['GET'])
 def get_routes(request):
@@ -40,19 +41,46 @@ def get_routes(request):
     ]
     return Response(routes)
 
-@api_view(['GET'])
+@api_view(['GET','POST'])
 def posts(request):
     posts = Post.objects.all()
-    serializer = PostsSerializer(posts, many = True)
+    if request.method == "GET":
+        serializer = PostsSerializer(posts, many = True)
+
+
+    if request.method == "POST":
+        data = request.data
+        
+        #create = Post.objects.create(
+        #    owner = request.user.profile
+            
+        #)
     return Response(serializer.data)
 
 
-@api_view(['GET','POST','PUT','DELETE'])
+@api_view(['GET','PUT','DELETE'])
 def post(request, pk):
     post = Post.objects.get(id=pk)
 
     if request.method == "GET":
         serializer = PostsSerializer(post, many = False)
     
+
+    return Response(serializer.data)
+
+
+@api_view(['GET','POST'])
+def profiles(request):
+    profiles = Profile.objects.all()
+    serializer = ProfileSerializer(profiles, many = True)
+    return Response(serializer.data)
+
+
+@api_view(['GET','PUT','DELETE'])
+def profile(request, pk):
+    profile = Profile.objects.get(id=pk)
+
+    if request.method == "GET":
+        serializer = ProfileSerializer(profile, many = False)
 
     return Response(serializer.data)
