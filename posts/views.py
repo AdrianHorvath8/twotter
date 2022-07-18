@@ -1,7 +1,8 @@
 
+import pkgutil
 from django.shortcuts import redirect, render
 from django.db.models import Q
-from .models import Post, Comment, Topic
+from .models import Post, Comment, Topic, Bookmark
 from users.models import Profile
 from .forms import PostForm, CommentForm
 from django.contrib import messages
@@ -18,6 +19,10 @@ def posts(request):
         Q(id__in=[user_profile.id for user_profile in following_profiles]) | 
         Q(id = request.user.profile.id) 
     ).order_by("?")[:5]
+
+    bookmarks = Bookmark.objects.filter( profile = request.user.profile)
+    for bookmark in bookmarks:
+        bookmark = bookmark
 
     page = request.GET.get("page")
     paginator = Paginator(posts, 10)
@@ -41,7 +46,7 @@ def posts(request):
             post.save()
             return redirect("posts")
 
-    context = {"posts":posts, "form":form, "profiles":profiles,}
+    context = {"posts":posts, "form":form, "profiles":profiles, "bookmark":bookmark}
     return render(request,"posts/posts.html",context)
 
 @login_required(login_url="login")
@@ -165,4 +170,45 @@ def comment_remove_like(request, pk):
     comment = Comment.objects.get(id = pk)
     comment.like.remove(request.user.profile)
     
+    return redirect(request.GET["next"] if "next" in request.GET else "posts")
+
+
+def bookmark(request):
+    bookmarks = Bookmark.objects.filter( profile = request.user.profile)
+    
+    for bookmark in bookmarks:
+        posts = bookmark.post.all()
+        bookmark = bookmark
+
+    
+    page = request.GET.get("page")
+    paginator = Paginator(posts, 5)
+
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        posts = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        posts = paginator.page(page)
+    
+    context = {"bookmark":bookmark, "posts":posts}
+    return render(request, "posts/bookmark.html", context)
+
+
+def add_post_to_bookmark(request, pk):
+    post = Post.objects.get(id=pk)
+    bookmark = Bookmark.objects.filter( profile = request.user.profile)
+
+    for i in bookmark:
+        i.post.add(post)
+    return redirect(request.GET["next"] if "next" in request.GET else "posts")
+
+def remove_post_from_bookmark(request, pk):
+    post = Post.objects.get(id=pk)
+    bookmark = Bookmark.objects.filter( profile = request.user.profile)
+
+    for i in bookmark:
+        i.post.remove(post)
     return redirect(request.GET["next"] if "next" in request.GET else "posts")

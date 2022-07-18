@@ -1,0 +1,22 @@
+{% extends "main.html" %}
+
+{% block content %}
+{% load static %}
+    {% if posts %}
+        <div class="infinite-container">
+            {% include 'post.html' with posts=posts bookmark=bookmark %}
+            
+            {% if posts.has_next %}
+            <a class="infinite-more-link" href="?page={{ posts.next_page_number }}">next</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <h2>Save Tweets for later</h2>
+        <strong>Don’t let the good ones fly away! Bookmark Twoots to easily find them again in the future.</strong>
+    {% endif %}
+    
+
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
+    <script src="{% static 'js/scroll_pagination.js' %}"></script>
+{% endblock content %}

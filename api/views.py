@@ -31,6 +31,12 @@ def get_routes(request):
         {"GET":"/api/chats/id"},
         {"PUT":"/api/chats/id"},
         {"DELETE":"/api/chats/id"},
+
+        
+        {"POST":"/api/bookmark"},
+        {"GET":"/api/bookmark/id"},
+        {"PUT":"/api/bookmark/id"},
+        {"DELETE":"/api/bookmark/id"},
     ]
     return Response(routes)
 

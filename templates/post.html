@@ -37,6 +37,16 @@
             {{ post.like.count }} <a href="{% url 'post_like' post.id %}?next={{request.path}}">Like</a>
         {% endif %}
         
+        
+        {% if post in bookmark.post.all %}
+            <br>
+            <a href="{% url 'remove_post_from_bookmark' post.id %}?next={{request.path}}">Remove from bookmark</a>           
+        {% else %}
+            <br>
+            <a href="{% url 'add_post_to_bookmark' post.id %}?next={{request.path}}">Add to bookmark</a>
+            
+        {% endif %}
+        
         {% if request.user.profile == post.owner %}
             <br>
             <a href="{% url 'delete_post' post.id  %}?next={{request.path}}">Delete</a>
