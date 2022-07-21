@@ -39,6 +39,7 @@ You need to have installed python and VScode.
 * Sending messges to people
 * You can follow people
 * Search by profile, Twoot, topics and comments
+* Like Twoots and comments
 
 
 ## Versioning
