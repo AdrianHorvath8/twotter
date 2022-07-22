@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from posts.models import Post, Comment
 from users.models import Profile, Chat, Message
 from .serializers import PostsSerializer, ProfileSerializer
+from rest_framework import status
 
 @api_view(['GET'])
 def get_routes(request):
@@ -46,16 +47,16 @@ def posts(request):
     posts = Post.objects.all()
     if request.method == "GET":
         serializer = PostsSerializer(posts, many = True)
+        return Response(serializer.data)
 
 
     if request.method == "POST":
-        data = request.data
+        serializer = PostsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        #create = Post.objects.create(
-        #    owner = request.user.profile
-            
-        #)
-    return Response(serializer.data)
 
 
 @api_view(['GET','PUT','DELETE'])
@@ -64,16 +65,36 @@ def post(request, pk):
 
     if request.method == "GET":
         serializer = PostsSerializer(post, many = False)
-    
+        return Response(serializer.data)
 
-    return Response(serializer.data)
+    if request.method == "PUT":
+        serializer = PostsSerializer(post, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == "DELETE":
+        post.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
 
 
 @api_view(['GET','POST'])
 def profiles(request):
     profiles = Profile.objects.all()
-    serializer = ProfileSerializer(profiles, many = True)
-    return Response(serializer.data)
+    if request.method == "GET":
+        serializer = ProfileSerializer(profiles, many = True)
+        return Response(serializer.data)
+
+    if request.method == "POST":
+        serializer = ProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET','PUT','DELETE'])
@@ -82,5 +103,15 @@ def profile(request, pk):
 
     if request.method == "GET":
         serializer = ProfileSerializer(profile, many = False)
+        return Response(serializer.data)
 
-    return Response(serializer.data)
+    if request.method == "PUT":
+        serializer = ProfileSerializer(profile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == "DELETE":
+        profile.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

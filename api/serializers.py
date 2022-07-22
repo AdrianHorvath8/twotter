@@ -1,4 +1,5 @@
 from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 from posts.models import Post, Comment
 from users.models import Profile, Chat, Message
 from users.views import following
@@ -15,6 +16,7 @@ class UserSerializer(ModelSerializer):
 class ProfileSerializer(ModelSerializer):
     following = UserSerializer(many=True)
     followers = UserSerializer(many=True)
+    profile_image = serializers.ImageField(required=False)
     class Meta:
         model = Profile
         fields = "__all__"

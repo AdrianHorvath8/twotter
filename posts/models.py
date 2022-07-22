@@ -56,7 +56,7 @@ class Bookmark(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,
     primary_key=True, editable=False)
     profile = models.OneToOneField("users.Profile", on_delete=models.CASCADE, null=True, blank=True)
-    post = models.ManyToManyField(Post, null =True, blank=True)
+    post = models.ManyToManyField(Post, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
