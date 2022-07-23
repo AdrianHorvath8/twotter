@@ -14,8 +14,7 @@ class UserSerializer(ModelSerializer):
 
 
 class ProfileSerializer(ModelSerializer):
-    following = UserSerializer(many=True)
-    followers = UserSerializer(many=True)
+    
     profile_image = serializers.ImageField(required=False)
     class Meta:
         model = Profile

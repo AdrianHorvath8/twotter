@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from posts.models import Post, Comment
 from users.models import Profile, Chat, Message
-from .serializers import PostsSerializer, ProfileSerializer
+from .serializers import PostsSerializer, ProfileSerializer, UserSerializer
 from rest_framework import status
 
 @api_view(['GET'])
@@ -90,7 +90,7 @@ def profiles(request):
         return Response(serializer.data)
 
     if request.method == "POST":
-        serializer = ProfileSerializer(data=request.data)
+        serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
