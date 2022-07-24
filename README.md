@@ -48,7 +48,7 @@ I use [Git](https://git-scm.com/) for versioning.
 
 ## Links
 
-*  = API documentation    
+*  [API documentation](https://documenter.getpostman.com/view/18653876/UzXKXJxA)
  
 
 ## Authors
