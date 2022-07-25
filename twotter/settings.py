@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY_TW")
 
 
 
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["localhost", "twotter-for-u.herokuapp.com"]
 
 
 # Application definition
@@ -217,5 +217,5 @@ AWS_S3_FILE_OVERWRITE  = False
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
-#if os.getcwd() == '/app':
-#    DEBUG = False
+if os.getcwd() == '/app':
+    DEBUG = False
