@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY_TW")
 
 
 
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["localhost","twotter-for-u.herokuapp.com"]
 
 
 # Application definition

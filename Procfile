@@ -1,0 +1,1 @@
+web: gunicorn twotter.wsgi --log-file -
