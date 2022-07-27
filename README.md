@@ -40,6 +40,7 @@ You need to have installed python and VScode.
 * You can follow people
 * Search by profile, Twoot, topics and comments
 * Like Twoots and comments
+* Saving Twoots to own bookmark
 
 
 ## Versioning
