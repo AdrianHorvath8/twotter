@@ -1,4 +1,4 @@
-# Not completed
+# [Live demo](https://twotter-for-u.herokuapp.com/)
 
 # Twotter
 
@@ -22,7 +22,6 @@ You need to have installed python and VScode.
 * pip install -r requirements.txt
 * set up your database
 * put information about your database into the settings.py
-* python manage.py makemigrations
 * python manage.py migrate
 * python manage.py runserver
 
@@ -36,11 +35,15 @@ You need to have installed python and VScode.
 ## Features
 
 * Creating posts (Twoots)
+* Creating comments to posts
 * Sending messges to people
 * You can follow people
 * Search by profile, Twoot, topics and comments
 * Like Twoots and comments
 * Saving Twoots to own bookmark
+* Get Twoots by your favorite topic
+* Edit your profile
+
 
 
 ## Versioning
