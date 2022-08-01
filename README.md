@@ -57,4 +57,4 @@ I use [Git](https://git-scm.com/) for versioning.
 
 ## Authors
 
-* Adrián Horváth - *Backend work* 
+* *Adrián Horváth* - *Backend work* 
