@@ -47,7 +47,7 @@ def account(request,pk):
 
     if request.method == "POST":
         form = AccountForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid:
+        if form.is_valid():
             form.save()
             return redirect("account", pk=request.user.profile.id)
 
@@ -85,7 +85,7 @@ def register(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
 
-        if form.is_valid:  
+        if form.is_valid():  
             user = form.save(commit=False)
             user.username = user.username.lower()
             user.save()
@@ -94,6 +94,9 @@ def register(request):
             login(request, user)
             
             return redirect("account", pk=request.user.profile.id) 
+
+        else:
+            messages.error(request, "Error during registration")
 
 
     context = {"page":page, "form":form}
