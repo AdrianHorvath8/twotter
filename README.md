@@ -1,4 +1,4 @@
-# [Live demo](https://twotter-for-u.herokuapp.com/)
+# [View live demo](https://twotter-for-u.herokuapp.com/)
 
 # Twotter
 
