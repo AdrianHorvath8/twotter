@@ -1,6 +1,5 @@
-# Twotter
-
 ## [View live demo](https://twotter-for-u.herokuapp.com/)
+# Twotter
 
 I created a website that mimics the Twitter application. Please keep in mind that I am a backend developer, so the site does not look good.
 
