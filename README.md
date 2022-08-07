@@ -8,7 +8,7 @@ I created a website that mimics the Twitter application. Please keep in mind tha
 
 ### Prerequisites
 
-You need to have installed [python](https://www.python.org/downloads/) and VScode.
+You need to have installed [python](https://www.python.org/downloads/) and [VScode](https://code.visualstudio.com/Download).
 
 
 ### Installing
