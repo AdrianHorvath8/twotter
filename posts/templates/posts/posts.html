@@ -31,6 +31,7 @@
         
         
         <hr style="border: 3px solid;">
+        {% if request.user.is_authenticated %}
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in form %}
@@ -41,11 +42,69 @@
             <input type="submit" value="Twoot">
         </form>
         <hr style="border: 3px solid;">
+        {% endif %}
 
         <div class="infinite-container">
-            {% include 'post.html' with posts=posts bookmark=bookmark %}
-            {% if posts.has_next %}
-            <a class="infinite-more-link" href="?page={{ posts.next_page_number }}">next</a>
+            {% if request.user.is_authenticated %}
+                {% include 'post.html' with posts=posts bookmark=bookmark %}5
+                {% if posts.has_next %}
+                <a class="infinite-more-link" href="?page={{ posts.next_page_number }}">next</a>
+                {% endif %}
+
+
+            {% else %}
+
+                {% for post in posts %}
+                <div class="infinite-item">
+                    
+                    <a href="{% url 'profile' post.owner.id %}">
+                        <img style="max-width: 40px; border-radius: 50%;" src="{{ post.owner.profile_image.url }}" alt="">
+                        {{ post.owner.name }}
+                    </a>
+                    
+                    <br>
+                    <small>@{{ post.owner.username }}</small>
+                
+                    {{ post.created | timesince }}
+                    <br>
+                    <a href="{% url 'post_comments' post.id %}">{{ post.body}}</a>
+                
+                    {% if post.post_image %}
+                    <br>
+                    <br>
+                    <a href="{% url 'post_comments' post.id %}">
+                        <img style="max-width: 200px;" src="{{ post.post_image.url }}" alt="">
+                    </a>
+                    {% endif %}
+                
+                
+                    {% if request.user.profile in post.like.all %}
+                    <br>
+                    {{ post.like.count }} <a href="{% url 'post_remove_like' post.id %}?next={{request.path}}">Remove like</a>
+                    {% else %}
+                    <br>
+                    {{ post.like.count }} <a href="{% url 'post_like' post.id %}?next={{request.path}}">Like</a>
+                    {% endif %}
+                
+                
+                    {% if post in bookmark.post.all %}
+                    <br>
+                    <a href="{% url 'remove_post_from_bookmark' post.id %}?next={{request.path}}">Remove from bookmark</a>
+                    {% else %}
+                    <br>
+                    <a href="{% url 'add_post_to_bookmark' post.id %}?next={{request.path}}">Add to bookmark</a>
+                
+                    {% endif %}
+                
+                    {% if request.user.profile == post.owner %}
+                    <br>
+                    <a href="{% url 'delete_post' post.id  %}?next={{request.path}}">Delete</a>
+                    {% endif %}
+                
+                    <hr>
+                </div>
+                
+                {% endfor %}
             {% endif %}
         </div>
         

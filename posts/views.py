@@ -9,21 +9,29 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-@login_required(login_url="login")
-def posts(request):
-    following = request.user.profile.following.all()
-    following_profiles = Profile.objects.filter(id__in=[user.profile.id for user in following])
-    posts = Post.objects.filter(Q(owner__in=[owner for owner in following_profiles]) | Q(owner = request.user.profile))
-    profiles = Profile.objects.all()
-    profiles = profiles.exclude(
-        Q(id__in=[user_profile.id for user_profile in following_profiles]) | 
-        Q(id = request.user.profile.id) 
-    ).order_by("?")[:5]
-    topics = Topic.objects.all().order_by("?")[:10]
 
-    bookmarks = Bookmark.objects.filter( profile = request.user.profile)
-    for bookmark in bookmarks:
-        bookmark = bookmark
+def posts(request):
+    if request.user.is_authenticated:
+        following = request.user.profile.following.all()
+        following_profiles = Profile.objects.filter(id__in=[user.profile.id for user in following])
+        posts = Post.objects.filter(Q(owner__in=[owner for owner in following_profiles]) | Q(owner = request.user.profile))
+        profiles = Profile.objects.all()
+        profiles = profiles.exclude(
+            Q(id__in=[user_profile.id for user_profile in following_profiles]) | 
+            Q(id = request.user.profile.id) 
+        ).order_by("?")[:5]
+        topics = Topic.objects.all().order_by("?")[:10]
+
+        bookmarks = Bookmark.objects.filter( profile = request.user.profile)
+        for bookmark in bookmarks:
+            bookmark = bookmark
+    else:
+        print("lol")
+        posts=Post.objects.all().order_by("?")[:50]
+        topics = Topic.objects.all().order_by("?")[:10]
+        profiles = Profile.objects.all()
+        bookmark = Bookmark.objects.none()
+
 
     page = request.GET.get("page")
     paginator = Paginator(posts, 10)
@@ -46,7 +54,8 @@ def posts(request):
             post.owner = request.user.profile
             post.save()
             return redirect("posts")
-
+    
+    print(posts)
     context = {"posts":posts, "form":form, "profiles":profiles, "bookmark":bookmark, "topics":topics}
     return render(request,"posts/posts.html",context)
 
@@ -175,6 +184,7 @@ def comment_remove_like(request, pk):
     return redirect(request.GET["next"] if "next" in request.GET else "posts")
 
 
+@login_required(login_url="login")
 def bookmark(request):
     bookmarks = Bookmark.objects.filter( profile = request.user.profile)
     
@@ -199,6 +209,7 @@ def bookmark(request):
     return render(request, "posts/bookmark.html", context)
 
 
+@login_required(login_url="login")
 def add_post_to_bookmark(request, pk):
     post = Post.objects.get(id=pk)
     bookmark = Bookmark.objects.filter( profile = request.user.profile)
@@ -207,6 +218,8 @@ def add_post_to_bookmark(request, pk):
         i.post.add(post)
     return redirect(request.GET["next"] if "next" in request.GET else "posts")
 
+
+@login_required(login_url="login")
 def remove_post_from_bookmark(request, pk):
     post = Post.objects.get(id=pk)
     bookmark = Bookmark.objects.filter( profile = request.user.profile)

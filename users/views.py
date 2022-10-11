@@ -73,6 +73,7 @@ def login_user(request):
     return render(request,"users/login_register.html", context)
 
 
+@login_required(login_url="login")
 def logout_user(request):
     logout(request)
     return redirect("posts")
@@ -213,6 +214,7 @@ def unfollowing(request, pk):
     return redirect(request.GET["next"] if "next" in request.GET else "posts")
 
 
+@login_required(login_url="login")
 def followers_users(request, pk):
     profile = Profile.objects.get(id= pk)
     followers = profile.followers.all()
@@ -222,6 +224,7 @@ def followers_users(request, pk):
     return render(request, "users/following_followers.html", context)
 
 
+@login_required(login_url="login")
 def following_users(request, pk):
     profile = Profile.objects.get(id= pk)
     page = "following"
