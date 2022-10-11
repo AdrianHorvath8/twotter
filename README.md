@@ -1,5 +1,4 @@
-# [Live demo](https://twotter-for-u.herokuapp.com/)
-
+## [View live demo](https://twotter-for-u.herokuapp.com/)
 # Twotter
 
 I created a website that mimics the Twitter application. Please keep in mind that I am a backend developer, so the site does not look good.
@@ -9,7 +8,7 @@ I created a website that mimics the Twitter application. Please keep in mind tha
 
 ### Prerequisites
 
-You need to have installed python and VScode.
+You need to have installed [Python](https://www.python.org/downloads/) and [VScode](https://code.visualstudio.com/Download)
 
 
 ### Installing
@@ -48,7 +47,7 @@ You need to have installed python and VScode.
 
 ## Versioning
 
-I use [Git](https://git-scm.com/) for versioning.
+I use [Git](https://git-scm.com/) for versioning
 
 ## Links
 
